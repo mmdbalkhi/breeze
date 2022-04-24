@@ -1,0 +1,7 @@
+include CONTRIBUTING.md
+include tox.ini
+include requirements.txt
+graft docs
+prune docs/_build
+graft tests
+global-exclude *.pyc
