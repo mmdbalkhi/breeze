@@ -1,24 +1,42 @@
 """ a flask application similar to Twitter just for fun!
 """
 
+from flask import Flask
+
 from breeze.auth import Auth
-from breeze.blueprints import auth_bp, blog_bp, home_bp, user_bp
 from breeze.commands import create_admin, create_db, drop_db
 from breeze.config import Config
-from breeze.create_app import create_app
-from breeze.database import db
-from breeze.errors import InternalServerError, PageNotFound
 from breeze.exceptions import BreezeException
-# from breeze.extensions import cache, csrf, login_manager, mail, migrate
-from breeze.models import Comment, Post, Tag, User
+from breeze.models import db, User, Post, Comment, Tag
 from breeze.utils import get_current_time
 
+__version__ = "0.1.0-dev"
+
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object("breeze.BreezeConfig")
+
+    # register database
+    with app.app_context():
+        db.init_app(app)
+        db.create_all()
+
+    # register app(s) from blueprints
+
+    return app
 
 class BreezeConfig(Config):
     """load env variables from .env file"""
 
+    import os
+
+    from dotenv import find_dotenv, load_dotenv
+
     dotenv_path = find_dotenv()
     if not dotenv_path:
-        raise FileExistsError(f"{dotenv_path} not exists.")
+        raise FileExistsError(".env file not exists.")
     load_dotenv()
     SECRET_KEY = os.environ.get("SECRET_KEY")
+
+    DEBUG = True
