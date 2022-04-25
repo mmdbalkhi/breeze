@@ -1,5 +1,5 @@
 <p algin="center">
-    <img src="artwork/breeze.svg">
+    <img src="artwork/breeze.png">
 </p>
 
 <h5 align="center"> a flask application similar to Twitter just For Fun!</h5>
