@@ -7,7 +7,7 @@ from breeze.auth import Auth
 from breeze.commands import create_admin, create_db, drop_db
 from breeze.config import Config
 from breeze.exceptions import BreezeException
-from breeze.models import db, User, Post, Comment, Tag
+from breeze.models import Comment, Post, Tag, User, db
 from breeze.utils import get_current_time
 
 __version__ = "0.1.0-dev"
@@ -25,6 +25,7 @@ def create_app():
     # register app(s) from blueprints
 
     return app
+
 
 class BreezeConfig(Config):
     """load env variables from .env file"""
