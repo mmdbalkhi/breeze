@@ -1,11 +1,11 @@
 <p algin="center">
-    <img src="artwork/breeze.png">
+    <img src="https://raw.githubusercontent.com/mmdbalkhi/breeze/main/artwork/breeze.png">
 </p>
 
 <h5 align="center"> a flask application similar to Twitter just For Fun!</h5>
 
 <p align="center">
-    <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+    <a href="https://github.com/mmdbalkhi/breeze/tree/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
 </p>
 
 ## Run
