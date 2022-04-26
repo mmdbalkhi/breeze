@@ -1,30 +1,59 @@
 from flask_sqlalchemy import SQLAlchemy
 
+from breeze import exc
+
 db = SQLAlchemy()
 
 
 class User(db.Model):
+
     __tablename__ = "users"
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(128), nullable=False)  # len(sha512) == 128
+    password = db.Column(db.String(128), nullable=True)  # len(sha512) == 128
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
 
     def save(self):
+        if not self.password:
+            raise exc.EmptyError("password is Empty")
+
         db.session.add(self)
         db.session.commit()
 
-    def delete(self):
-        db.session.delete(self)
+    def delete(self, confirm_password):
+        user = self.get_user_by_email(self.email)
+
+        if confirm_password != self.password:  # TODO: get password from db
+            raise exc.PermissionError(message="Password is not correct")
+
+        db.session.delete(user)
         db.session.commit()
 
     def update(self, title, content):
         self.title = title
         self.content = content
         db.session.commit()
+
+    @staticmethod
+    def get_all_users():
+        return User.query.all()
+
+    # id, username, email is unique
+    @staticmethod
+    def get_user_by_id(id):
+        return User.query.filter_by(id=id).first()
+
+    @staticmethod
+    def get_user_by_username(username):
+        return User.query.filter_by(username=username).first()
+
+    @staticmethod
+    def get_user_by_email(email):
+        return User.query.filter_by(email=email).first()
 
 
 class Post(db.Model):
