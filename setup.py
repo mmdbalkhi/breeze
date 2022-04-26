@@ -7,4 +7,18 @@ from setuptools import setup  # type: ignore
 if sys.version_info < (3, 8, 0):
     sys.exit("Python 3.8 or later is required. ")
 
-setup(install_requires=["flask", "python-dotenv", "Flask-SQLAlchemy"])
+requirements = ["flask", "python-dotenv", "Flask-SQLAlchemy"]
+docs_requirements = [
+    "furo",
+    "myst-parser",
+    "sphinx-copybutton",
+    "sphinx-design",
+    "sphinx-inline-tabs",
+    "sphinx-tabs",
+]
+dev_requirements = ["pytest", *requirements, *docs_requirements]
+
+setup(
+    install_requires=requirements,
+    extras_require={"dev": dev_requirements, "docs": docs_requirements},
+)
