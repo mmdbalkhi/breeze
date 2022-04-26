@@ -3,12 +3,12 @@
 
 from flask import Flask
 
+from breeze import utils
 from breeze.auth import Auth
 from breeze.commands import create_admin, create_db, drop_db
 from breeze.config import Config
-from breeze.exceptions import BreezeException
+from breeze.exc import BreezeException
 from breeze.models import Comment, Post, Tag, User, db
-from breeze.utils import get_current_time
 
 __version__ = "0.1.0-dev"
 
