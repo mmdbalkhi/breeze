@@ -57,7 +57,7 @@ class UserTests(TestBreezeDB):
 
     def test_remove_user(self):
         with self.app.app_context():
-            user = User(username="test1", email="test1@test.com", password="test1")
+            user = User(username="test1", email="test1@test.com")
             user.delete(confirm_password="test1")
 
     def test_remove_user_permission_error(self):

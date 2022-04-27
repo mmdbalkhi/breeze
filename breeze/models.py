@@ -26,8 +26,8 @@ class User(db.Model):
 
     def delete(self, confirm_password):
         user = self.get_user_by_email(self.email)
-
-        if confirm_password != self.password:  # TODO: get password from db
+        self.password = User.query.filter_by(email=self.email).first().password
+        if confirm_password != self.password:
             raise exc.PermissionError(message="Password is not correct")
 
         db.session.delete(user)
