@@ -7,7 +7,10 @@ hide-toc: true
 ```{include} ../README.md
 ```
 
-## License
+```{toctree}
+:caption: Development
+:hidden:
 
-```{include} ../LICENSE
+api
+license
 ```
