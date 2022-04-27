@@ -1,11 +1,25 @@
-from flask_sqlalchemy import SQLAlchemy
-
 from breeze import exc
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
 
 class User(db.Model):
+    """Users table on db
+
+    inherited from :class:`flask_sqlalchemy.SQLAlchemy`
+
+    Raises:
+        :class:`breeze.exc.EmptyError`: if password is empty then raise this exception
+        :class:`breeze.exc.PermissionError`: if user not have permission to perform
+        an action then raise this exception
+
+    Methods:
+        :meth:`save`: save user to db
+        :meth:`delete`: delete user from db
+        :meth:`update`: update user from db
+
+    """
 
     __tablename__ = "users"
 
@@ -18,6 +32,11 @@ class User(db.Model):
         return f"User('{self.username}', '{self.email}')"
 
     def save(self):
+        """Save user to db
+
+        Raises:
+            :class:`breeze.exc.EmptyError`
+        """
         if not self.password:
             raise exc.EmptyError("password is Empty")
 
@@ -25,6 +44,14 @@ class User(db.Model):
         db.session.commit()
 
     def delete(self, confirm_password):
+        """Delete user from db
+
+        Args:
+            ``confirm_password`` (`hash`): user password to confirm delete
+
+        Raises:
+            :class:`breeze.exc.PermissionError`
+        """
         user = self.get_user_by_email(self.email)
         self.password = User.query.filter_by(email=self.email).first().password
         if confirm_password != self.password:
@@ -33,7 +60,18 @@ class User(db.Model):
         db.session.delete(user)
         db.session.commit()
 
-    def update(self, title, content):
+    def update(self, title, content, confirm_password):
+        """Update user from db
+
+        Args:
+            ``title`` (`str`): User profile title
+            ``content`` (`str`): User profile info
+            ``confirm_password`` (`hash`): User password to confirm delete
+        """
+        self.password = User.query.filter_by(email=self.email).first().password
+        if confirm_password != self.password:
+            raise exc.PermissionError(message="Password is not correct")
+
         self.title = title
         self.content = content
         db.session.commit()

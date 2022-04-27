@@ -1,21 +1,32 @@
 """ a flask application similar to Twitter just for fun!
 """
-
-from flask import Flask
-
 from breeze import utils
 from breeze.auth import Auth
-from breeze.commands import create_admin, create_db, drop_db
-from breeze.config import Config
+from breeze.commands import create_admin
+from breeze.commands import create_db
+from breeze.commands import drop_db
+from breeze.config import BreezeConfig
 from breeze.exc import BreezeException
-from breeze.models import Comment, Post, Tag, User, db
+from breeze.models import Comment
+from breeze.models import db
+from breeze.models import Post
+from breeze.models import Tag
+from breeze.models import User
+from flask import Flask
 
 __version__ = "0.1.0-dev"
 
 
 def create_app():
+    """create a flask application with application Factory pattern
+    `application Factory <https://flask.palletsprojects.com/en/2.1.x/patterns/appfactories/>`_
+
+    Returns:
+        :class:`flask.Flask`: flask application
+    """
+
     app = Flask(__name__)
-    app.config.from_object("breeze.BreezeConfig")
+    app.config.from_object("breeze.Config")
 
     # register database
     with app.app_context():
@@ -27,8 +38,13 @@ def create_app():
     return app
 
 
-class BreezeConfig(Config):
-    """load env variables from .env file"""
+class Config(BreezeConfig):
+    """breeze configuration
+        Inherit from :class:`breeze.BreezeConfig`
+
+    Raises:
+        :class:`FileExistsError`: if the .env file not exists raise this exception
+    """
 
     import os
 

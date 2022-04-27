@@ -1,7 +1,6 @@
-class Config:
-    """
-    A base configuration class from which other configuration classes
-    inherit.
+class BreezeConfig:
+    """A base configuration class from which other configuration classes inherit.
+    for use in :class:`flask.config.Config`
     """
 
     DEBUG = False
