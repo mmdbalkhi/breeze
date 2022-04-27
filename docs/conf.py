@@ -54,7 +54,7 @@ html_theme_options = {
     "footer_icons": [
         {
             "name": "GitHub",
-            "url": "https://github.com/pradyunsg/furo",
+            "url": "https://github.com/mmdbalkhi/breeze",
             "html": "",
             "class": "fa-solid fa-github fa-2x",
         },

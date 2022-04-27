@@ -4,6 +4,10 @@ API
 .. module:: breeze
 
 
+.. autoclass:: breeze.Config
+
+.. autofunction:: breeze.create_app
+
 Auth
 ------------------
 

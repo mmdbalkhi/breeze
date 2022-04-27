@@ -21,7 +21,7 @@ def create_app():
     """create a flask application with application Factory pattern
     `application Factory <https://flask.palletsprojects.com/en/2.1.x/patterns/appfactories/>`_
 
-    Returns:
+    :return:
         :class:`flask.Flask`: flask application
     """
 
@@ -42,7 +42,7 @@ class Config(BreezeConfig):
     """breeze configuration
         Inherit from :class:`breeze.BreezeConfig`
 
-    Raises:
+    :raises:
         :class:`FileExistsError`: if the .env file not exists raise this exception
     """
 

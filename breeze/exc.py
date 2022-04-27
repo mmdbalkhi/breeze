@@ -2,7 +2,7 @@ class BreezeException(Exception):
     """Base class for all Breeze exceptions
     inherited from :class:`Exception`
 
-    Attributes:
+    :attr:
         :attr:`message` (str): the exception message
     """
 

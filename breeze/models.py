@@ -9,7 +9,7 @@ class User(db.Model):
 
     inherited from :class:`flask_sqlalchemy.SQLAlchemy`
 
-    Raises:
+    :raises:
         :class:`breeze.exc.EmptyError`: if password is empty then raise this exception
         :class:`breeze.exc.PermissionError`: if user not have permission to perform
         an action then raise this exception
@@ -34,7 +34,7 @@ class User(db.Model):
     def save(self):
         """Save user to db
 
-        Raises:
+        :raises:
             :class:`breeze.exc.EmptyError`
         """
         if not self.password:
@@ -46,10 +46,10 @@ class User(db.Model):
     def delete(self, confirm_password):
         """Delete user from db
 
-        Args:
+        :args:
             ``confirm_password`` (`hash`): user password to confirm delete
 
-        Raises:
+        :raises:
             :class:`breeze.exc.PermissionError`
         """
         user = self.get_user_by_email(self.email)
@@ -63,7 +63,7 @@ class User(db.Model):
     def update(self, title, content, confirm_password):
         """Update user from db
 
-        Args:
+        :args:
             ``title`` (`str`): User profile title
             ``content`` (`str`): User profile info
             ``confirm_password`` (`hash`): User password to confirm delete

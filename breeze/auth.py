@@ -9,15 +9,15 @@ from flask import session
 class Auth:
     """Authentication class for Breeze
 
-    Attributes:
+    :attributes:
         :attr:`User` (class): User class
     """
 
     def __init__(self, app=None):
         """Initialize the authentication class
 
-        Args:
-            ``app`` (:class:`flask.Flask`, optional): Defaults to None.
+        :args:
+            `app` (:class:`flask.Flask`, optional): Defaults to None.
         """
         if app is not None:
             self.init_app(app)
@@ -25,7 +25,7 @@ class Auth:
     def init_app(self, app):
         """Initialize the authentication class with the app
 
-        Args:
+        :args:
             ``app`` (:class:`flask.Flask`): flask application
         """
         app.config.setdefault("AUTH_USER_MODEL", User)
@@ -34,11 +34,11 @@ class Auth:
     def login_required(self, func):
         """Decorator to require login
 
-        Args:
+        :args:
             ``func`` (`function`): a function to be decorated
 
-        Returns:
-            ``decorator``: a decorator to require login
+        :return:
+            ``decorator`` a decorator to require login
         """
 
         @wraps(func)
@@ -53,7 +53,7 @@ class Auth:
     def current_user(self):
         """Get the current user
 
-        Returns:
+        :return:
             :class:`flask.g`: flask global object
         """
         if not hasattr(g, "user"):
@@ -66,15 +66,15 @@ class Auth:
     def is_authenticated(self):
         """Check if the user is authenticated
 
-        Returns:
-            `bool`: if current user is authenticated
+        :return:
+            ``bool``: if current user is authenticated
         """
         return self.current_user is not None
 
     def login(self, user):
         """Login the user to the session
 
-        Args:
+        :args:
             `User` (:class`breeze.User`): user row in db
         """
         session["user_id"] = user.id
@@ -88,7 +88,7 @@ class Auth:
     def register(self, user):
         """Register the user to the db
 
-        Args:
+        :args:
             `user` (:class:`breeze.User`): user row in db
         """
         db.session.add(user)
@@ -98,10 +98,10 @@ class Auth:
     def get_user(self, user_id):
         """Get the user by id
 
-        Args:
-            ``user_id`` (:meth:`breeze.User.id`): user id
+        :args:
+            `user_id` (:meth:`breeze.User.id`)
 
-        Returns:
+        :return:
             :class:`breeze.User`: user row in db
         """
         return self.User.query.get(user_id)
