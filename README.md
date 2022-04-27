@@ -5,8 +5,19 @@
 <h5 align="center"> a flask application similar to Twitter just For Fun!</h5>
 
 <p align="center">
-    <a href="https://github.com/mmdbalkhi/breeze/tree/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+    <a href="https://github.com/mmdbalkhi/breeze/tree/main/LICENSE">
+        <img src="https://img.shields.io/badge/license-MIT-blue.svg">
+    </a>
+    <a href='https://python-breeze.readthedocs.io/?badge=latest'>
+        <img src='https://readthedocs.org/projects/python-breeze/badge/?version=latest' alt='Documentation Status' />
+    </a>
+    <a href="https://github.com/mmdbalkhi/breeze/actions/workflows/tests.yaml">
+        <img src="https://github.com/mmdbalkhi/breeze/actions/workflows/tests.yaml/badge.svg"
+        alt="test badge">
+    </a>
 </p>
+
+the breeze is a fun web application for practising with [Flask](https://flask.palletsprojects.com/), [SQLalchemy](https://www.sqlalchemy.org/) and a few other things that try to be similar to **Twitter**!
 
 ## Run
 
