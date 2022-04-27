@@ -1,10 +1,11 @@
 import unittest
 
 import pytest
+from breeze import db
+from breeze import exc
+from breeze import User
 from flask import Flask
 from sqlalchemy.exc import IntegrityError
-
-from breeze import User, db, exc
 
 
 class TestBreezeDB(unittest.TestCase):

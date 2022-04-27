@@ -1,5 +1,4 @@
 import pytest
-
 from breeze import utils
 
 
@@ -21,6 +20,7 @@ def test_string_to_bytes_error():
 
 
 def test_string_to_hash():
+    # flake8: noqa B950
     assert isinstance(utils.string_to_hash("test"), str)
     assert (
         utils.string_to_hash("test")
