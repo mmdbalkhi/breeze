@@ -15,6 +15,9 @@
         <img src="https://github.com/mmdbalkhi/breeze/actions/workflows/tests.yaml/badge.svg"
         alt="test badge">
     </a>
+    <a href="https://codecov.io/gh/mmdbalkhi/breeze">
+        <img src="https://codecov.io/gh/mmdbalkhi/breeze/branch/main/graph/badge.svg?token=6C8nLeyYht"/>
+    </a>
 </p>
 
 the breeze is a fun web application for practising with [Flask](https://flask.palletsprojects.com/), [SQLalchemy](https://www.sqlalchemy.org/) and a few other things that try to be similar to **Twitter**!
