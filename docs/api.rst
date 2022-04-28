@@ -11,7 +11,7 @@ API
 Auth
 ------------------
 
-.. automodule:: auth
+.. automodule:: breeze.auth
    :members:
 
 
@@ -19,7 +19,7 @@ Auth
 Config
 ------------------
 
-.. automodule:: config
+.. automodule:: breeze.config
    :members:
 
 
@@ -27,19 +27,19 @@ Config
 Exception
 ------------------
 
-.. automodule:: exc
+.. automodule:: breeze.exc
    :members:
 
 
 
 Models
 ------------------
-.. automodule:: models
+.. automodule:: breeze.models
    :members:
 
 
 
 Utils
 ------------------
-.. automodule:: utils
+.. automodule:: breeze.utils
    :members:
