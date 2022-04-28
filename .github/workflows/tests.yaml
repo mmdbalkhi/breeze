@@ -40,7 +40,7 @@ jobs:
       - name: Install requirements ⚙️
         run: |
           pip install -r requirements.txt
-          pip install pytest flake8
+          pip install pytest flake8 coverage
           pip install -e .
 
       - name: Run Flake8 💫
@@ -49,5 +49,12 @@ jobs:
       - name: ⚡ create .env file
         run: touch .env
 
-      - name: Run Tests 🧪
-        run: pytest -v --tb=short
+      - name: Run Tests and collect coverage 🧪
+        run: |
+          coverage run -m pytest
+          coverage xml
+      - name: Upload coverage to Codecov 📈
+        uses: codecov/codecov-action@v2
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
