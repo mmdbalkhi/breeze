@@ -1,5 +1,8 @@
 """ a flask application similar to Twitter just for fun!
 """
+import logging
+from pathlib import Path
+
 from breeze import utils
 from breeze.auth import Auth
 from breeze.commands import create_admin
@@ -40,10 +43,8 @@ def create_app():
 
 class Config(BreezeConfig):
     """breeze configuration
-        Inherit from :class:`breeze.BreezeConfig`
+    Inherit from :class:`breeze.BreezeConfig`
 
-    :raises:
-        :class:`FileExistsError`: if the .env file not exists raise this exception
     """
 
     import os
@@ -52,7 +53,8 @@ class Config(BreezeConfig):
 
     dotenv_path = find_dotenv()
     if not dotenv_path:
-        raise FileExistsError(".env file not exists.")
+        logging.warning(".env not found")
+        Path(".env").touch()
     load_dotenv()
     SECRET_KEY = os.environ.get("SECRET_KEY")
 
