@@ -1,23 +1,17 @@
 """ a flask application similar to Twitter just for fun!
 """
-import logging
-from pathlib import Path
-
+from breeze import exc
 from breeze import utils
 from breeze.auth import Auth
-from breeze.commands import create_admin
-from breeze.commands import create_db
-from breeze.commands import drop_db
+from breeze.blueprints import auth as auth_bp
 from breeze.config import BreezeConfig
-from breeze.exc import BreezeException
 from breeze.models import Comment
 from breeze.models import db
 from breeze.models import Post
 from breeze.models import Tag
 from breeze.models import User
-from flask import Flask
 
-__version__ = "0.1.0-dev"
+__version__ = "0.2.0-dev"
 
 
 def create_app():
@@ -27,6 +21,8 @@ def create_app():
     :return:
         :class:`flask.Flask`: flask application
     """
+    from flask import Flask, json
+    from werkzeug.exceptions import HTTPException
 
     app = Flask(__name__)
     app.config.from_object("breeze.Config")
@@ -36,8 +32,17 @@ def create_app():
         db.init_app(app)
         db.create_all()
 
-    # register app(s) from blueprints
+    # exc
+    @app.errorhandler(Exception)
+    def handle_exception(e):
+        # pass through HTTP errors
+        if isinstance(e, HTTPException):
+            return e
+        elif isinstance(e, exc.InvalidUsage):
+            return json.jsonify({"message": e.message}), 400
 
+    # register app(s) from blueprints
+    app.register_blueprint(auth_bp.bp)
     return app
 
 
@@ -47,7 +52,9 @@ class Config(BreezeConfig):
 
     """
 
+    import logging
     import os
+    from pathlib import Path
 
     from dotenv import find_dotenv, load_dotenv
 
