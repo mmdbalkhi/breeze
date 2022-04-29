@@ -22,3 +22,9 @@ class EmptyError(BreezeException):
     Exception raised when a object is empty.
     inherited from :class:`breeze.exc.BreezeException`
     """
+
+
+class InvalidUsage(BreezeException):
+    """Exception raised when a user does not have permission to perform an action.
+    inherited from :class:`breeze.exc.BreezeException`
+    """
