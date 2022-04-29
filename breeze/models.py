@@ -1,4 +1,5 @@
 from breeze import exc
+from breeze import utils
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -40,6 +41,7 @@ class User(db.Model):
         if not self.password:
             raise exc.EmptyError("password is Empty")
 
+        self.password = utils.string_to_hash(self.password)
         db.session.add(self)
         db.session.commit()
 
@@ -47,14 +49,14 @@ class User(db.Model):
         """Delete user from db
 
         :args:
-            ``confirm_password`` (`hash`): user password to confirm delete
+            ``confirm_password`` (`str`): user password to confirm delete
 
         :raises:
             :class:`breeze.exc.PermissionError`
         """
         user = self.get_user_by_email(self.email)
         self.password = User.query.filter_by(email=self.email).first().password
-        if confirm_password != self.password:
+        if not utils.check_password_hash(self.password, confirm_password):
             raise exc.PermissionError(message="Password is not correct")
 
         db.session.delete(user)
@@ -75,6 +77,17 @@ class User(db.Model):
         self.title = title
         self.content = content
         db.session.commit()
+
+    def check_password(self, password):
+        """Check user password
+
+        :args:
+            ``password`` (`hash`): User password to confirm delete
+
+        :return: `bool`: True if password is correct, False otherwise
+        """
+        self.password = User.query.filter_by(email=self.email).first().password
+        return utils.check_password_hash(password, self.password)
 
     @staticmethod
     def get_all_users():
