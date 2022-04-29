@@ -1,33 +1,9 @@
-import unittest
-
 import pytest
-from breeze import db
 from breeze import exc
 from breeze import User
-from flask import Flask
 from sqlalchemy.exc import IntegrityError
 
-
-class TestBreezeDB(unittest.TestCase):
-
-    # initial flask app
-    app = Flask(__name__)
-
-    # flask app configs
-    app.config["TESTING"] = True
-    app.config["SECRET_KEY"] = "very Secret key"
-
-    # SQLAlchemy configs
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///breeze.db"
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-    with app.app_context():
-        db.init_app(app)
-
-        # Ensures that the database is emptied for next unit test
-        db.drop_all()
-
-        db.create_all()
+from . import TestBreezeDB
 
 
 class UserTests(TestBreezeDB):
