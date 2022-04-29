@@ -34,7 +34,7 @@ def test_string_to_hash():
 
 def test_check_password_hash():
     assert utils.check_password_hash(
-        "very secret password",
         "6e43ad2674c6a092d8a117958b4449fa2f28b01b3e26a120e8cca17ef0326c3d9bb951d3339fef7d100c4c6448bc00d0a1b7c4c0945334d143ff6991248e7d26",
+        "very secret password",
     )
     assert not utils.check_password_hash("nice password", "this is hash?")

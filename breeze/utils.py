@@ -36,7 +36,7 @@ def string_to_hash(string):
     return sha3_512(string_to_bytes(string)).hexdigest()
 
 
-def check_password_hash(password, hash):
+def check_password_hash(hash, password):
     """Checks if a password matches a hash.
 
     :args:
@@ -46,4 +46,4 @@ def check_password_hash(password, hash):
     :return:
         `bool`: if password matches hash return True else False
     """
-    return string_to_hash(password) == hash
+    return hash == string_to_hash(password)
