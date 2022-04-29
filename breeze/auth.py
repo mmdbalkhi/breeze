@@ -1,6 +1,3 @@
-from functools import wraps
-
-from breeze.models import db
 from breeze.models import User
 from flask import g
 from flask import session
@@ -31,24 +28,6 @@ class Auth:
         app.config.setdefault("AUTH_USER_MODEL", User)
         self.User = app.config["AUTH_USER_MODEL"]
 
-    def login_required(self, func):
-        """Decorator to require login
-
-        :args:
-            ``func`` (`function`): a function to be decorated
-
-        :return:
-            ``decorator`` a decorator to require login
-        """
-
-        @wraps(func)
-        def decorated_view(*args, **kwargs):
-            if not self.current_user:
-                return self.login_manager.unauthorized()
-            return func(*args, **kwargs)
-
-        return decorated_view
-
     @property
     def current_user(self):
         """Get the current user
@@ -59,7 +38,7 @@ class Auth:
         if not hasattr(g, "user"):
             g.user = None
             if "user_id" in session:
-                g.user = self.User.query.get(session["user_id"])
+                g.user = User.query.filter_by(session["user_id"])
         return g.user
 
     @property
@@ -91,8 +70,7 @@ class Auth:
         :args:
             `user` (:class:`breeze.User`): user row in db
         """
-        db.session.add(user)
-        db.session.commit()
+        user.save()
         self.login(user)
 
     def get_user(self, user_id):
@@ -104,4 +82,4 @@ class Auth:
         :return:
             :class:`breeze.User`: user row in db
         """
-        return self.User.query.get(user_id)
+        return User.query.get(user_id)
