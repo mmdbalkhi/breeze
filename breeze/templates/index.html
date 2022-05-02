@@ -1,0 +1,7 @@
+Welcome to Breeze!
+
+for login see <a href="/login">login</a> and register <a href="/register">register</a>
+
+{% for message in get_flashed_messages() %}
+    <div> {{ message }}</div>
+{% endfor %}

@@ -11,7 +11,7 @@ from breeze.models import Post
 from breeze.models import Tag
 from breeze.models import User
 
-__version__ = "0.2.0-dev"
+__version__ = "0.3.0-dev"
 
 
 def create_app():
@@ -23,26 +23,24 @@ def create_app():
     """
     from flask import Flask, json
     from werkzeug.exceptions import HTTPException
+    from sqlalchemy.exc import OperationalError
 
     app = Flask(__name__)
     app.config.from_object("breeze.Config")
 
     # register database
-    with app.app_context():
-        db.init_app(app)
-        db.create_all()
-
-    # exc
-    @app.errorhandler(Exception)
-    def handle_exception(e):
-        # pass through HTTP errors
-        if isinstance(e, HTTPException):
-            return e
-        elif isinstance(e, exc.InvalidUsage):
-            return json.jsonify({"message": e.message}), 400
+    try:
+        with app.app_context():
+            db.init_app(app)
+            db.create_all()
+    except OperationalError:
+        pass
 
     # register app(s) from blueprints
     app.register_blueprint(auth_bp.bp)
+
+    # app.add_url_rule("/", endpoint="index")
+
     return app
 
 

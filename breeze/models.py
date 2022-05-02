@@ -86,8 +86,7 @@ class User(db.Model):
 
         :return: `bool`: True if password is correct, False otherwise
         """
-        self.password = User.query.filter_by(email=self.email).first().password
-        return utils.check_password_hash(password, self.password)
+        return utils.check_password_hash(self.password, password)
 
     @staticmethod
     def get_all_users():
