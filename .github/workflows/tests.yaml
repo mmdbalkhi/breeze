@@ -47,7 +47,7 @@ jobs:
         run: flake8 breeze tests setup.py
 
       - name: ⚡ create .env file
-        run: touch .env
+        run: echo "SECRET_KEY=`date | sha256sum | base64 | head -c 60`" > .env
 
       - name: Run Tests and collect coverage 🧪
         run: |
