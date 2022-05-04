@@ -11,6 +11,7 @@ requirements = [
     "python-dotenv>=0.20.0",
     "SQLAlchemy>=0.8.0",
     "Flask-SQLAlchemy>=2.5.1",
+    "bcrypt>=3.2.2",
 ]
 docs_requirements = [
     "furo",
