@@ -1,5 +1,6 @@
 from datetime import datetime
-from hashlib import sha3_512
+
+import bcrypt
 
 
 def get_current_time():
@@ -12,38 +13,39 @@ def get_current_time():
     return datetime.utcnow()
 
 
-def string_to_bytes(string):
+def string_to_bytes(string: str) -> bytes:
     """Converts a string to bytes.
 
     :args:
-        ``string`` (`str`): input string
-
+        ``string`` (`str`): String to convert
     :return:
-        `bytes`: _description_
+        `bytes` : Converted string
     """
     return bytes(string, "utf-8")
 
 
-def string_to_hash(string):
-    """Returns the sha3_512 hash of a string.
+def string_to_hash(string: str) -> bytes:
+    """Converts a string to a hash.
 
     :args:
         ``string`` (`str`): input string
 
-    :return:
-        `str`: sha3_512 hash of the string
+    :returns:
+        `bytes`: hash of the string
     """
-    return sha3_512(string_to_bytes(string)).hexdigest()
+    return bcrypt.hashpw(string_to_bytes(string), bcrypt.gensalt())
 
 
-def check_password_hash(hash, password):
+def check_password_hash(password: str, hash: bytes) -> bool:
     """Checks if a password matches a hash.
 
     :args:
         ``password`` (`str`): password to check
-        ``hash`` (`hash`): hash to check against
+        ``hash`` (`bytes`): hash to check
 
-    :return:
-        `bool`: if password matches hash return True else False
+    :returns:
+        `bool`: True if the password matches the hash, False otherwise
     """
-    return hash == string_to_hash(password)
+    if not (password or hash):
+        return
+    return bcrypt.checkpw(string_to_bytes(password), hash)
