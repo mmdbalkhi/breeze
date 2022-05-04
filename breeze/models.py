@@ -56,7 +56,7 @@ class User(db.Model):
         """
         user = self.get_user_by_email(self.email)
         self.password = User.query.filter_by(email=self.email).first().password
-        if not utils.check_password_hash(self.password, confirm_password):
+        if not utils.check_password_hash(confirm_password, self.password):
             raise exc.PermissionError(message="Password is not correct")
 
         db.session.delete(user)
