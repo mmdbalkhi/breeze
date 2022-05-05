@@ -13,19 +13,6 @@ def get_current_time():
     return datetime.utcnow()
 
 
-def string_to_bytes(string: str) -> bytes:
-    """Converts a string to bytes.
-
-    :args:
-        ``string`` (`str`): String to convert
-    :return:
-        `bytes` : Converted string
-    """
-    if isinstance(string, bytes):
-        return string
-    return bytes(string, "utf-8")
-
-
 def string_to_hash(string: str) -> str:
     """Converts a string to a hash.
 

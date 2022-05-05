@@ -1,4 +1,3 @@
-import pytest
 import requests
 from breeze import utils
 
@@ -8,18 +7,6 @@ def test_get_current_time():
     assert 2022 <= utils.get_current_time().year <= 2030  # this code Valid until 2030
     assert 1 <= utils.get_current_time().month <= 12
     assert 1 <= utils.get_current_time().day <= 31
-
-
-def test_string_to_bytes():
-    assert isinstance(utils.string_to_bytes("test"), bytes)
-    assert utils.string_to_bytes("test") == b"test"
-    assert isinstance(utils.string_to_bytes(b"test"), bytes)
-    assert utils.string_to_bytes(b"test") == b"test"
-
-
-def test_string_to_bytes_error():
-    with pytest.raises(TypeError):
-        utils.string_to_bytes(1)
 
 
 def test_string_to_hash():
