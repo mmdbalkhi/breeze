@@ -1,16 +1,18 @@
+from breeze.auth import Auth
+from breeze.models import Post
+from breeze.utils import get_current_time
 from flask import abort
 from flask import Blueprint
 from flask import flash
+from flask import g
 from flask import redirect
 from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
 
-from breeze.models import Post
-from breeze.utils import get_current_time
-
 bp = Blueprint("posts", __name__, url_prefix="/p")
+auth = Auth()
 
 
 @bp.route("/new", methods=("GET", "POST"))
@@ -21,11 +23,16 @@ def new():
         :class:`flask.Response`: The rendered template if the request is GET,
         :class:`flask.Response`: The redirect to the post if the request is POST
     """
+
+    if not auth.is_authenticated:
+        flash("You must be logged in to create a post")
+        return redirect(url_for("auth.login"))
+
+    with open("/tmp/file", "w") as f:
+        f.write(str(g.user))
     if request.method == "POST":
         user_id = session["user_id"]
-        if not user_id:
-            flash("You must be logged in to create a post")
-            return redirect(url_for("auth.login"))
+
         content = request.form["content"]
         post = Post(
             user_id=user_id,
