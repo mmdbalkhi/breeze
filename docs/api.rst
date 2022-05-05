@@ -30,6 +30,19 @@ Authentication
 .. automodule:: breeze.blueprints.auth
    :members:
 
+Index
+------------------
+
+.. automodule:: breeze.blueprints.index
+   :members:
+
+
+Posts
+------------------
+
+.. automodule:: breeze.blueprints.posts
+   :members:
+
 
 Config
 ------------------
