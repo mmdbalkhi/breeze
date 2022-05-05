@@ -1,6 +1,6 @@
 from datetime import datetime
-
-import bcrypt
+from hashlib import md5
+from hashlib import sha3_512
 
 
 def get_current_time():
@@ -21,22 +21,24 @@ def string_to_bytes(string: str) -> bytes:
     :return:
         `bytes` : Converted string
     """
+    if isinstance(string, bytes):
+        return string
     return bytes(string, "utf-8")
 
 
-def string_to_hash(string: str) -> bytes:
+def string_to_hash(string: str) -> str:
     """Converts a string to a hash.
 
     :args:
         ``string`` (`str`): input string
 
     :returns:
-        `bytes`: hash of the string
+        `str`: hash of the string
     """
-    return bcrypt.hashpw(string_to_bytes(string), bcrypt.gensalt())
+    return sha3_512(string.encode("utf-8")).hexdigest()
 
 
-def check_password_hash(password: str, hash: bytes) -> bool:
+def check_password_hash(hash: bytes, password: str) -> bool:
     """Checks if a password matches a hash.
 
     :args:
@@ -46,6 +48,18 @@ def check_password_hash(password: str, hash: bytes) -> bool:
     :returns:
         `bool`: True if the password matches the hash, False otherwise
     """
-    if not (password or hash):
+    if not password or not hash:
         return
-    return bcrypt.checkpw(string_to_bytes(password), hash)
+    return sha3_512(password.encode("utf-8")).hexdigest() == hash
+
+
+def get_image_from_gravatar(email: str) -> str:
+    """Gets an image from gravatar.
+
+    :args:
+        ``email`` (`str`): email to get the image from gravatar
+
+    :returns:
+        `str`: url to the image
+    """
+    return "https://www.gravatar.com/avatar/" + md5(email.encode("utf-8")).hexdigest()
