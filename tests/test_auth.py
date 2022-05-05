@@ -1,10 +1,10 @@
-from breeze import Auth
-from breeze import db
-from breeze import User
 from flask import g
 from flask import session
 
 from . import TestBreezeDB
+from breeze import Auth
+from breeze import db
+from breeze import User
 
 auth = Auth()
 
@@ -98,6 +98,21 @@ class TestAuth(TestBreezeDB):
             assert (
                 self.client.get("/current_user").data
                 == b"User('test', 'test@test.com')"
+            )
+
+    def test_current_user_not_g(self):
+        with self.app.app_context():
+            # Ensure that the database is empty
+            db.drop_all()
+            db.create_all()
+
+            @self.app.route("/current_user_not_g")
+            def current_user_not_g():
+                return str(auth.current_user)
+
+            assert self.client.get("/current_user_not_g").data in (
+                b"User('test', 'test@test.com')",
+                b"None",
             )
 
     def test_is_authenticated(self):

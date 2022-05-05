@@ -22,25 +22,46 @@
 
 the breeze is a fun web application for practising with [Flask](https://flask.palletsprojects.com/), [SQLalchemy](https://www.sqlalchemy.org/) and a few other things that try to be similar to **Twitter**!
 
-## Run
+## Run the breeze
 
-* install required packages
+- breeze need to [python](https://python.org) 3.7 or upper
+
+first your need to install breeze requirements:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
 pip install -r requirements.txt
-pip install -e .
 ```
 
-* add breeze to environment
+then your add breeze to your environment and run breeze:
+
+- bash:
 
 ```bash
 export FLASK_APP=breeze
-```
-
-* run server
-
-```bash
 flask run
 ```
+
+- fish
+
+```fish
+set -x FLASK_APP myapp
+flask run
+```
+
+- cmd
+
+```
+set FLASK_APP=breeze
+flask run
+```
+
+- powershell
+
+```
+$env:FLASK_APP = "breeze"
+flask run
+```
+
+now you can visit your breeze on your browser:
+
+- <http://localhost:5000>

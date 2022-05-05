@@ -4,6 +4,8 @@ from breeze import exc
 from breeze import utils
 from breeze.auth import Auth
 from breeze.blueprints import auth as auth_bp
+from breeze.blueprints import index as index_bp
+from breeze.blueprints import posts as posts_bp
 from breeze.config import BreezeConfig
 from breeze.models import Comment
 from breeze.models import db
@@ -11,7 +13,7 @@ from breeze.models import Post
 from breeze.models import Tag
 from breeze.models import User
 
-__version__ = "0.3.0-dev"
+__version__ = "0.4.0-dev"
 
 
 def create_app():
@@ -38,8 +40,8 @@ def create_app():
 
     # register app(s) from blueprints
     app.register_blueprint(auth_bp.bp)
-
-    # app.add_url_rule("/", endpoint="index")
+    app.register_blueprint(index_bp.bp)
+    app.register_blueprint(posts_bp.bp)
 
     return app
 

@@ -1,6 +1,7 @@
-from breeze.models import User
 from flask import g
 from flask import session
+
+from breeze.models import User
 
 
 class Auth:
@@ -9,15 +10,6 @@ class Auth:
     :attributes:
         :attr:`User` (class): User class
     """
-
-    def __init__(self, app=None):
-        """Initialize the authentication class
-
-        :args:
-            `app` (:class:`flask.Flask`, optional): Defaults to None.
-        """
-        if app is not None:
-            self.init_app(app)
 
     def init_app(self, app):
         """Initialize the authentication class with the app
@@ -38,7 +30,7 @@ class Auth:
         if not hasattr(g, "user"):
             g.user = None
             if "user_id" in session:
-                g.user = User.query.filter_by(session["user_id"])
+                g.user = User.get_user_by_id(session["user_id"])
         return g.user
 
     @property
@@ -56,6 +48,7 @@ class Auth:
         :args:
             `User` (:class`breeze.User`): user row in db
         """
+        session.clear()
         session["user_id"] = user.id
         g.user = user
 

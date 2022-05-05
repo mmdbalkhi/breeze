@@ -1,7 +1,17 @@
-Welcome to Breeze!
+{% extends 'base.html' %}
+{% block content %}
 
-for login see <a href="/login">login</a> and register <a href="/register">register</a>
-
-{% for message in get_flashed_messages() %}
-    <div> {{ message }}</div>
+{% if posts %}
+{% for post in posts %}
+<div class="post" name="post">
+    <div name="user" class="user"> <a href="/u/{{ post.user.username }}">{{ post.user.username }}</a></div>
+    <div name="content" class="content">
+        {{ post.content }}
+    </div>
+</div>
 {% endfor %}
+{% else %}
+{{ username }} haven't yet a post
+{% endif %}
+
+{% endblock %}

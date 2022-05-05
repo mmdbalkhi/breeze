@@ -1,6 +1,7 @@
+from flask_sqlalchemy import SQLAlchemy
+
 from breeze import exc
 from breeze import utils
-from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
@@ -15,7 +16,7 @@ class User(db.Model):
         :class:`breeze.exc.PermissionError`: if user not have permission to perform
         an action then raise this exception
 
-    Methods:
+    :methods:
         :meth:`save`: save user to db
         :meth:`delete`: delete user from db
         :meth:`update`: update user from db
@@ -30,6 +31,12 @@ class User(db.Model):
     password = db.Column(db.String(128), nullable=True)  # len(sha512) == 128
 
     def __repr__(self):
+        """User representation
+
+        :returns:
+            `str`: User representation
+                e.g. User(username="admin", email="admin@test.com")
+        """
         return f"User('{self.username}', '{self.email}')"
 
     def save(self):
@@ -56,26 +63,10 @@ class User(db.Model):
         """
         user = self.get_user_by_email(self.email)
         self.password = User.query.filter_by(email=self.email).first().password
-        if not utils.check_password_hash(confirm_password, self.password):
+        if not utils.check_password_hash(self.password, confirm_password):
             raise exc.PermissionError(message="Password is not correct")
 
         db.session.delete(user)
-        db.session.commit()
-
-    def update(self, title, content, confirm_password):
-        """Update user from db
-
-        :args:
-            ``title`` (`str`): User profile title
-            ``content`` (`str`): User profile info
-            ``confirm_password`` (`hash`): User password to confirm delete
-        """
-        self.password = User.query.filter_by(email=self.email).first().password
-        if confirm_password != self.password:
-            raise exc.PermissionError(message="Password is not correct")
-
-        self.title = title
-        self.content = content
         db.session.commit()
 
     def check_password(self, password):
@@ -107,26 +98,41 @@ class User(db.Model):
 
 
 class Post(db.Model):
+    """Posts table on db
+
+    inherited from :class:`flask_sqlalchemy.SQLAlchemy`
+
+    :methods:
+        :meth:`save`: save post to db
+        :meth:`delete`: delete post from db
+        :meth:`update`: update post from db
+    """
+
     __tablename__ = "posts"
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
+    time = db.Column(db.Text, nullable=False)
+
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     user = db.relationship("User", backref=db.backref("posts", lazy=True))
 
     def __repr__(self):
-        return f"Post('{self.title}', '{self.content}')"
+        """Post representation
+
+        :returns:
+            `str`: Post representation
+                e.g Post(user="mmdbalkhi", content="Hello World")
+        """
+        return f"Post('{self.user}', '{self.content}')"
 
     def save(self):
+        """Save post to db"""
         db.session.add(self)
         db.session.commit()
 
     def delete(self):
+        """Delete post from db"""
         db.session.delete(self)
-        db.session.commit()
-
-    def update(self, title, content):
-        self.title = title
-        self.content = content
         db.session.commit()
 
     @staticmethod

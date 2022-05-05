@@ -1,7 +1,8 @@
 import unittest
 
-from breeze import db
 from flask import Flask
+
+from breeze import db
 
 
 class TestBreezeDB(unittest.TestCase):
