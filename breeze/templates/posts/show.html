@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div>
+    {% for message in get_flashed_messages() %}
+    <div> {{ message }}</div>
+    {% endfor %}
+</div>
+
+<div>
+    {% if post %}
+    <div name="user" class="user"> <a href="/u/{{ post.user.username }}"> {{ post.user.username }} </a></div>
+    <div name="content" class="content">
+        {{ post.content }}
+    </div>
+    <div name="time" class="time">{{post.time}}</div>
+    {% endif %}
+</div>
+
+
+{% endblock %}
