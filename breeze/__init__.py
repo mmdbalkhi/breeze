@@ -61,7 +61,7 @@ class Config(BreezeConfig):
     dotenv_path = find_dotenv()
     if not dotenv_path:
         logging.warning(".env not found")
-        Path(".env").touch()
+        Path(".env").write_text(f"SECRET_KEY={utils.get_random_string(64)}")
     load_dotenv()
     SECRET_KEY = os.environ.get("SECRET_KEY")
 
