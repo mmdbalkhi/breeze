@@ -48,8 +48,10 @@ class Auth:
         :args:
             `User` (:class`breeze.User`): user row in db
         """
-        session.clear()
+        session.pop("user_id", None)
+
         session["user_id"] = user.id
+
         g.user = user
 
     def logout(self):
