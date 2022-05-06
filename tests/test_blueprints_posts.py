@@ -103,3 +103,8 @@ def test_show_post():
         # check that the post was created
         post = Post.query.first()
         assert post.content == "test create a new post"
+
+
+def test_show_post_error():
+    respone = client.get("/p/404")
+    assert respone.status_code == 404
