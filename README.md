@@ -23,9 +23,6 @@
 
 the breeze is a fun web application for practising with [Flask](https://flask.palletsprojects.com/), [SQLalchemy](https://www.sqlalchemy.org/) and a few other things that try to be similar to **Twitter**!
 
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmmdbalkhi%2Fbreeze.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmmdbalkhi%2Fbreeze?ref=badge_large)
-
 ## Run the breeze
 
 - breeze need to [python](https://python.org) 3.7 or upper
@@ -69,3 +66,6 @@ flask run
 now you can visit your breeze on your browser:
 
 - <http://localhost:5000>
+
+## FOSSA
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmmdbalkhi%2Fbreeze.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmmdbalkhi%2Fbreeze?ref=badge_large)
