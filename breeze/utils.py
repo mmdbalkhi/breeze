@@ -1,3 +1,4 @@
+import random
 from datetime import datetime
 from hashlib import md5
 from hashlib import sha3_512
@@ -50,3 +51,18 @@ def get_image_from_gravatar(email: str) -> str:
         `str`: url to the image
     """
     return "https://www.gravatar.com/avatar/" + md5(email.encode("utf-8")).hexdigest()
+
+
+def get_random_string(length: int) -> str:
+    """Generates a random string.
+
+    :args:
+        ``length`` (`int`): length of the string
+
+    :returns:
+        `str`: random string
+    """
+    letters = """abcdefghijklmnopqrstuvwxyz\
+    ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\
+    ~`!@#$%^&*()-_=+|}]{["':;?/>.<, """
+    return "".join(random.choice(letters) for i in range(length))
