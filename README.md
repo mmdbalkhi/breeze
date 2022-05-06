@@ -11,6 +11,7 @@
     <a href='https://python-breeze.readthedocs.io/?badge=latest'>
         <img src='https://readthedocs.org/projects/python-breeze/badge/?version=latest' alt='Documentation Status' />
     </a>
+<a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fmmdbalkhi%2Fbreeze?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmmdbalkhi%2Fbreeze.svg?type=shield"/></a>
     <a href="https://github.com/mmdbalkhi/breeze/actions/workflows/tests.yaml">
         <img src="https://github.com/mmdbalkhi/breeze/actions/workflows/tests.yaml/badge.svg"
         alt="test badge">
@@ -21,6 +22,9 @@
 </p>
 
 the breeze is a fun web application for practising with [Flask](https://flask.palletsprojects.com/), [SQLalchemy](https://www.sqlalchemy.org/) and a few other things that try to be similar to **Twitter**!
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmmdbalkhi%2Fbreeze.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmmdbalkhi%2Fbreeze?ref=badge_large)
 
 ## Run the breeze
 
