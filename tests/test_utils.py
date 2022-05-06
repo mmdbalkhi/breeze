@@ -38,3 +38,8 @@ def test_get_image_from_gravatar():
     assert (
         requests.get(utils.get_image_from_gravatar("user@test.com")).status_code == 200
     )
+
+
+def test_get_random_string():
+    assert isinstance(utils.get_random_string(10), str)
+    assert len(utils.get_random_string(10)) == 10
