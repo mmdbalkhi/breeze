@@ -77,18 +77,18 @@ def login():
         error = None
 
         if not username or not password:
-            error = "Username and password are required."
+            error, status_code = "Username and password are required.", 400
         else:
             user = User.query.filter_by(username=username).first()
             if not user or not user.check_password(password):
-                error = "Incorrect username or password."
+                error, status_code = "Incorrect username or password.", 401
 
         if error is None:
             auth.login(user)
             return redirect(url_for("auth.profile"))
 
         flash(error)
-        return render_template("auth/login.html"), 400
+        return render_template("auth/login.html"), status_code
 
     return render_template("auth/login.html")
 
@@ -135,10 +135,10 @@ def profile():
     :returns:
         :class:`flask.Response`: redirect to the user's profile to /u/username
     """
-    try:
+    if auth.is_authenticated:
         user_id = session["user_id"]
         username = User.get_user_by_id(user_id).username
         return redirect(f"/u/{username}")
-    except KeyError:
-        flash("you must be logged in to see your profile")
-        return redirect(url_for("auth.login"))
+
+    flash("you must be logged in to see your profile")
+    return redirect(url_for("auth.login"))
