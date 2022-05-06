@@ -100,45 +100,77 @@ class TestAuth(TestBreezeDB):
                 == b"User('test', 'test@test.com')"
             )
 
-    def test_current_user_not_g(self):
-        with self.app.app_context():
-            # Ensure that the database is empty
-            db.drop_all()
-            db.create_all()
+    def test_current_user_if_not_g(self):
+        @self.app.route("/current_user_if_not_g")
+        def current_user_if_not_g():
 
-            @self.app.route("/current_user_not_g")
-            def current_user_not_g():
-                return str(auth.current_user)
+            # login the user
+            user = User(username="test", email="test@test.com", password="test")
+            user.save()
 
-            assert self.client.get("/current_user_not_g").data in (
-                b"User('test', 'test@test.com')",
-                b"None",
-            )
+            auth.login(user)
+
+            # remove user attribute from g
+            delattr(g, "user")
+
+            # add user_id to session
+            session["user_id"] = user.id
+
+            return str(auth.current_user)
+
+        assert (
+            self.client.get("/current_user_if_not_g").data
+            == b"User('test', 'test@test.com')"
+        )
+
+        @self.app.route("/current_user_if_not_g_not_session")
+        def current_user_if_not_g_not_session():
+            session.pop("user_id")  # remove user_id from session
+            return str(auth.current_user)
+
+        assert self.client.get("/current_user_if_not_g_not_session").data == b"None"
 
     def test_is_authenticated(self):
         """Test the is_authenticated property"""
         with self.app.app_context():
 
-            @self.app.route("/is_auth")
-            def is_auth():
+            @self.app.route("/is_auth_true")
+            def is_auth_true():
                 # Create a user
                 # Ensure that the database is empty
                 db.drop_all()
                 db.create_all()
 
-                # Create a user
                 user = User(username="test", email="test@test.com", password="test")
-                user.save()
-
-                # Login the user
                 auth.login(user)
 
                 # Check if the user is authenticated
                 assert auth.is_authenticated
 
-                return "OK"
+                return str(auth.is_authenticated)
 
-            assert self.client.get("/is_auth").status_code == 200
+            @self.app.route("/is_auth_false")
+            def is_auth_false():
+                # Create a user
+                # Ensure that the database is empty
+                db.drop_all()
+                db.create_all()
+
+                # logout the user
+                auth.logout()
+
+                # Check if the user is authenticated
+                assert not auth.is_authenticated
+
+                return str(auth.is_authenticated), 401
+
+            # if user is authenticated
+            assert self.client.get("/is_auth_true").status_code == 200
+            assert self.client.get("/is_auth_true").data == b"True"
+
+            # if user is not authenticated
+            assert self.client.get("/is_auth_false").status_code == 401
+            assert self.client.get("/is_auth_false").data == b"False"
 
     def test_get_user(self):
         with self.app.app_context():
