@@ -1,6 +1,3 @@
-from breeze.auth import Auth
-from breeze.models import Post
-from breeze.utils import get_current_time
 from flask import abort
 from flask import Blueprint
 from flask import flash
@@ -10,6 +7,10 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
+
+from breeze.auth import Auth
+from breeze.models import Post
+from breeze.utils import get_current_time
 
 bp = Blueprint("posts", __name__, url_prefix="/p")
 auth = Auth()
