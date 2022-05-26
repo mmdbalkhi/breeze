@@ -1,4 +1,9 @@
-class BreezeConfig:
+from breeze.utils import gen_random_string
+from dotenv import find_dotenv
+from dotenv import load_dotenv
+
+
+class Config:
     """A base configuration class from which other configuration classes inherit.
     for use in :class:`flask.config.Config`
     """
@@ -6,7 +11,7 @@ class BreezeConfig:
     DEBUG = False
     TESTING = False
     CSRF_ENABLED = True
-    SECRET_KEY = "this-really-needs-to-be-changed"
+    SECRET_KEY = gen_random_string(128)
     SQLALCHEMY_DATABASE_URI = "sqlite:///breeze.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAIL_SERVER = "smtp.googlemail.com"
@@ -16,3 +21,7 @@ class BreezeConfig:
     MAIL_PASSWORD = ""
     ADMINS = [""]
     LOG_TO_STDOUT = False
+
+    # load env vars from .env file if it exists
+    if find_dotenv():  # pragma: no cover
+        load_dotenv()
