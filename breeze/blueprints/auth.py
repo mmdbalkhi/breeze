@@ -1,3 +1,8 @@
+from breeze.auth import Auth
+from breeze.models import Post
+from breeze.models import User
+from breeze.utils import get_image_from_gravatar
+from breeze.utils import normalise_email
 from flask import abort
 from flask import Blueprint
 from flask import flash
@@ -7,11 +12,6 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
-
-from breeze.auth import Auth
-from breeze.models import Post
-from breeze.models import User
-from breeze.utils import get_image_from_gravatar
 
 bp = Blueprint("auth", __name__, url_prefix="/u")
 auth = Auth()
@@ -48,8 +48,17 @@ def register():
             error = "please fill out all fields"
         elif User.query.filter_by(username=username).first():
             error = f"User {username} is already registered."
-
         else:
+            email = normalise_email(email)
+            if not email:
+                flash("email is invalid")
+                return (
+                    render_template(
+                        "auth/register.html",
+                    ),
+                    400,
+                )
+
             user = User(username=username, email=email, password=password)
             auth.register(user)
 
@@ -57,9 +66,16 @@ def register():
             return redirect(url_for("auth.login"))
 
         flash(error)
-        return render_template("auth/register.html"), 400
+        return (
+            render_template(
+                "auth/register.html",
+            ),
+            400,
+        )
 
-    return render_template("auth/register.html")
+    return render_template(
+        "auth/register.html",
+    )
 
 
 @bp.route("/login", methods=("GET", "POST"))
@@ -88,9 +104,16 @@ def login():
             return redirect(url_for("auth.profile"))
 
         flash(error)
-        return render_template("auth/login.html"), status_code
+        return (
+            render_template(
+                "auth/login.html",
+            ),
+            status_code,
+        )
 
-    return render_template("auth/login.html")
+    return render_template(
+        "auth/login.html",
+    )
 
 
 @bp.route("/logout")
