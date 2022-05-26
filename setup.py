@@ -22,7 +22,15 @@ docs_requirements = [
     "sphinx-inline-tabs",
     "sphinx-tabs",
 ]
-dev_requirements = ["pytest", *requirements, *docs_requirements]
+dev_requirements = [
+    "pytest",
+    "flake8",
+    "pre-commit",
+    "coverage",
+    "requests",
+    *requirements,
+    *docs_requirements,
+]
 
 setup(
     install_requires=requirements,
