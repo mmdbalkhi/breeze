@@ -9,7 +9,6 @@ client = create_app().test_client()
 def test_register_get():
     response = client.get("/u/register")
     assert response.status_code == 200
-    assert b"Register" in response.data
 
 
 def test_register_user():
@@ -64,10 +63,21 @@ def test_user_is_exist():
     assert b"User testUserIsExist is already registered." in response.data
 
 
+def test_register_if_email_is_invalid():
+    response = client.post(
+        "/u/register",
+        data=dict(
+            username="testregister", email="testregister@test.c", password="1234"
+        ),
+        follow_redirects=True,
+    )
+    assert response.status_code == 400
+    assert b"email is invalid" in response.data
+
+
 def test_get_login():
     response = client.get("/u/login")
     assert response.status_code == 200
-    assert b"Login" in response.data
 
 
 def test_400_error_login():
