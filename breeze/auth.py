@@ -1,7 +1,6 @@
+from breeze.models import User
 from flask import g
 from flask import session
-
-from breeze.models import User
 
 
 class Auth:
@@ -57,7 +56,7 @@ class Auth:
     def logout(self):
         """Logout the user from the session"""
         session.pop("user_id", None)
-        g.user = None
+        delattr(g, "user")
 
     def register(self, user):
         """Register the user to the db
