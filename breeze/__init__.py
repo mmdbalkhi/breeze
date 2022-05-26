@@ -4,9 +4,10 @@ from breeze import exc
 from breeze import utils
 from breeze.auth import Auth
 from breeze.blueprints import auth as auth_bp
+from breeze.blueprints import comments as comments_bp
 from breeze.blueprints import index as index_bp
 from breeze.blueprints import posts as posts_bp
-from breeze.config import BreezeConfig
+from breeze.config import Config
 from breeze.models import Comment
 from breeze.models import db
 from breeze.models import Post
@@ -27,42 +28,31 @@ def create_app():
     from werkzeug.exceptions import HTTPException
     from sqlalchemy.exc import OperationalError
 
-    app = Flask(__name__)
+    # init flask app
+    app = Flask(
+        __name__,
+        template_folder="../frontend/templates",
+        static_folder="../frontend/static",
+    )
+
     app.config.from_object("breeze.Config")
 
-    # register database
-    try:
-        with app.app_context():
+    with app.app_context():
+
+        try:
+            # init database
             db.init_app(app)
             db.create_all()
-    except OperationalError:
-        pass
+        except OperationalError:  # pragma: no cover
+            pass
 
     # register app(s) from blueprints
     app.register_blueprint(auth_bp.bp)
+    app.register_blueprint(comments_bp.bp)
     app.register_blueprint(index_bp.bp)
     app.register_blueprint(posts_bp.bp)
 
+    # add rule to bp(s)
+    app.add_url_rule("/", endpoint="index")
+
     return app
-
-
-class Config(BreezeConfig):
-    """breeze configuration
-    Inherit from :class:`breeze.BreezeConfig`
-
-    """
-
-    import logging
-    import os
-    from pathlib import Path
-
-    from dotenv import find_dotenv, load_dotenv
-
-    dotenv_path = find_dotenv()
-    if not dotenv_path:
-        logging.warning(".env not found")
-        Path(".env").write_text(f"SECRET_KEY={utils.get_random_string(64)}")
-    load_dotenv()
-    SECRET_KEY = os.environ.get("SECRET_KEY")
-
-    DEBUG = True
