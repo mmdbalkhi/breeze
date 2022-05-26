@@ -1,5 +1,5 @@
+import pytest
 import requests
-
 from breeze import utils
 
 
@@ -20,26 +20,64 @@ def test_string_to_hash():
     )
 
 
-def test_check_password_hash():
-    assert utils.check_password_hash(
+def test_check_hash():
+    assert utils.check_hash(
         utils.string_to_hash("test"),
         "test",
     )
-    assert not utils.check_password_hash(
+    assert not utils.check_hash(
         utils.string_to_hash("test"),
         "test2",
     )
-    assert not utils.check_password_hash(None, "hash")
-    assert not utils.check_password_hash("password", None)
+    assert not utils.check_hash(None, "hash")
+    assert not utils.check_hash("password", None)
 
 
 def test_get_image_from_gravatar():
     assert isinstance(utils.get_image_from_gravatar("user@test.com"), str)
-    assert (
-        requests.get(utils.get_image_from_gravatar("user@test.com")).status_code == 200
-    )
+
+    try:
+        assert (
+            requests.get(
+                utils.get_image_from_gravatar("user@test.com"), timeout=1
+            ).status_code
+            == 200
+        )
+    except requests.exceptions.ConnectionError:  # pragma: no cover
+        pytest.skip("internet connection is not available")
 
 
-def test_get_random_string():
-    assert isinstance(utils.get_random_string(10), str)
-    assert len(utils.get_random_string(10)) == 10
+def test_gen_random_string():
+    assert isinstance(utils.gen_random_string(10), str)
+    assert len(utils.gen_random_string(10)) == 10
+
+
+@pytest.mark.parametrize("case", ["test", "تست", "prueba", "テスト", "测试"])
+def test_normalise(case):
+    assert utils.normalise(case) == case
+
+
+@pytest.mark.parametrize("case", [b"byte", "str", b"str", None])
+def test_normalise_types(case):
+    assert isinstance(utils.normalise(case), str)
+
+
+@pytest.mark.parametrize(
+    "case0",
+    [
+        "test@test.com",
+        "test.test@test.io",
+        "test.test+test@test.wiki",
+        "test.com",
+        "test@test",
+        "ایمیل@test.com",
+        "",
+    ],
+)
+def test_normalise_email_type(case0):
+    assert utils.normalise_email(case0) in [
+        "test@test.com",
+        "testtest@test.io",
+        "testtest@test.wiki",
+        False,
+    ]
