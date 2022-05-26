@@ -1,7 +1,7 @@
+from breeze.models import Post
+from breeze.utils import get_image_from_gravatar
 from flask import Blueprint
 from flask import render_template
-
-from breeze.models import Post
 
 bp = Blueprint("index", __name__)
 
@@ -14,4 +14,4 @@ def index():
         :class:`flask.Response`: The rendered template
     """
     posts = Post.get_all_posts()
-    return render_template("index.html", posts=posts)
+    return render_template("index.html", gravatar=get_image_from_gravatar, posts=posts)
