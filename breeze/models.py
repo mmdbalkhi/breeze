@@ -1,7 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy
-
 from breeze import exc
 from breeze import utils
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash
 
 db = SQLAlchemy()
 
@@ -45,10 +46,12 @@ class User(db.Model):
         :raises:
             :class:`breeze.exc.EmptyError`
         """
+        self.email = utils.normalise_email(self.email)
+
         if not self.password:
             raise exc.EmptyError("password is Empty")
 
-        self.password = utils.string_to_hash(self.password)
+        self.password = generate_password_hash(self.password)
         db.session.add(self)
         db.session.commit()
 
@@ -63,7 +66,7 @@ class User(db.Model):
         """
         user = self.get_user_by_email(self.email)
         self.password = User.query.filter_by(email=self.email).first().password
-        if not utils.check_password_hash(self.password, confirm_password):
+        if not check_password_hash(self.password, confirm_password):
             raise exc.PermissionError(message="Password is not correct")
 
         db.session.delete(user)
@@ -77,11 +80,7 @@ class User(db.Model):
 
         :return: `bool`: True if password is correct, False otherwise
         """
-        return utils.check_password_hash(self.password, password)
-
-    @staticmethod
-    def get_all_users():
-        return User.query.all()
+        return check_password_hash(self.password, password)
 
     # id, username, email is unique
     @staticmethod
@@ -147,47 +146,32 @@ class Post(db.Model):
     def get_posts_by_user_id(user_id):
         return Post.query.filter_by(user_id=user_id).all()
 
-    @staticmethod
-    def get_posts_by_tag_id(tag_id):
-        return Post.query.filter_by(tag_id=tag_id).all()
-
-    @staticmethod
-    def get_posts_by_title(title):
-        return Post.query.filter_by(title=title).all()
-
-    @staticmethod
-    def get_comments_by_content(content):
-        return Comment.query.filter_by(content=content).all()
-
 
 class Comment(db.Model):
+    """"""
+
     __tablename__ = "comments"
+
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
+    time = db.Column(db.Text, nullable=False)
+
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"), nullable=False)
     user = db.relationship("User", backref=db.backref("comments", lazy=True))
+
     post = db.relationship("Post", backref=db.backref("comments", lazy=True))
+    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"), nullable=False)
 
     def __repr__(self):
-        return f"Comment('{self.content}')"
+        return f"Comment({self.id}, '{self.content}')"
 
-        def save(self):
-            db.session.add(self)
-
+    def save(self):
+        db.session.add(self)
         db.session.commit()
 
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-
-    def update(self, content):
-        self.content = content
-        db.session.commit()
-
-    @staticmethod
-    def get_all_comments():
-        return Comment.query.all()
 
     @staticmethod
     def get_comment_by_id(id):
@@ -201,12 +185,8 @@ class Comment(db.Model):
     def get_comments_by_post_id(post_id):
         return Comment.query.filter_by(post_id=post_id).all()
 
-    @staticmethod
-    def get_comments_by_content(content):
-        return Comment.query.filter_by(content=content).all()
 
-
-class Tag(db.Model):
+class Tag(db.Model):  # pragma: no cover
     __tablename__ = "tags"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
