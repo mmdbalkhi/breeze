@@ -13,5 +13,7 @@ hide-toc: true
 :hidden:
 
 api
+contributing
+todo
 license
 ```
