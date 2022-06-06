@@ -72,7 +72,7 @@ this section is breeze todos. we use this section to keep track of all the todos
 
 we use tags to categorize todos. on the future, maybe we will use tools to help you to categorize todos but for now, you can just add custom tags to your todos.
 
-* [async]: todos that are related to async programming.
+* ~[async]: todos that are related to async programming.~
 * [auth]: authentication related like login, logout, register, etc.
 * [db]: database related like migration, seeding, etc.
 * [frontend]: frontend related like jinja2, pages, etc.
@@ -109,8 +109,9 @@ we use tags to categorize todos. on the future, maybe we will use tools to help 
     - [X] add comment for post[post]
     - [ ] add comment for comment[post]
     - [ ] mention user in post or comment[post][mention]
-* [ ] use `Asynchronous` in project[async]
-    > for more information, please visit [flask docs](https://flask.palletsprojects.com/en/2.1.x/async-await/) (new in 2.x version)
+* [ ] ~use `Asynchronous` in project[async]~
+    > ~for more information, please visit [flask docs](https://flask.palletsprojects.com/en/2.1.x/async-await/) (new in 2.x version)~
+    why this won't do? because flask for now is not support async fully.(see issue [#13](https://github.com/mmdbalkhi/breeze/issues/13))
 
 * [ ] tag system
     - [ ] add tag for post or comment[post]
