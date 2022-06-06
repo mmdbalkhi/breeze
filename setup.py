@@ -6,7 +6,15 @@ from setuptools import setup  # type: ignore
 if sys.version_info < (3, 7, 0):
     sys.exit("Python 3.7 or later is required. ")
 
-requirements = [
+try:
+    from flask import __version__ as flask_version  # type: ignore
+
+    if flask_version < "2.0.0":
+        sys.exit("Flask 2.x or later is required. ")
+except ImportError:
+    pass
+
+requirements = [  # use last version of each package
     "flask>=2.1.0",
     "python-dotenv>=0.20.0",
     "SQLAlchemy>=0.8.0",
