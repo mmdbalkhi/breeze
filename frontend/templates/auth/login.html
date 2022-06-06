@@ -1,49 +1,24 @@
-<!-- source https://codepen.io/Mohuth/pen/QWgrPvp -->
-{% extends 'base.html' %}
+{% extends 'auth/base.html' %}
 {% block content %}
-<link rel="stylesheet" href="/static/css/auth.css">
-
-<div class="container">
-    <div class="screen">
-        <div class="screen__content">
-            <form class="login" method="post">
-
-                <div class="login__field">
-                    <i class="login__icon fas fa-user"></i>
-                    <input type="text" class="login__input" placeholder="User name" name="username">
-                </div>
-                <div class="login__field">
-                    <i class="login__icon fas fa-lock"></i>
-                    <input type="password" class="login__input" placeholder="Password" name="password">
-                </div>
-
-
-                <button class="button login__submit">
-                    <span class="button__text">Log In Now</span>
-                    <i class="button__icon fas fa-chevron-right"></i>
-                </button>
-            </form>
-            {% for message in get_flashed_messages() %}
-            <div class="alert alert-custom  fade in alert-dismissable show">
-                <div> {{ message }}</div>
-            </div>
-            {% endfor %}
-
-            <!--<div class="social-login">
-                    <h3>log in via</h3>
-                    <div class="social-icons">
-                        <a href="#" class="social-login__icon fab fa-instagram"></a>
-                        <a href="#" class="social-login__icon fab fa-facebook"></a>
-                        <a href="#" class="social-login__icon fab fa-twitter"></a>
-                    </div>
-                </div>-->
+    <form class="form-signin" action="{{ url_for('auth.login') }}" method="post">
+        {{ form.csrf_token }}
+        <div>
+            {{ form.username.label }} {{ form.username }}
         </div>
-        <div class="screen__background">
-            <span class="screen__background__shape screen__background__shape4"></span>
-            <span class="screen__background__shape screen__background__shape3"></span>
-            <span class="screen__background__shape screen__background__shape2"></span>
-            <span class="screen__background__shape screen__background__shape1"></span>
+        <div>
+            {{ form.password.label }}{{ form.password }}
         </div>
-    </div>
-</div>
+        <div>
+            {{ form.remember_me.label }}{{ form.remember_me }}
+        </div>
+        <div>
+            {{ form.recaptcha }}
+            <input type=submit class="btn btn-outline-success" value="Login now">
+        </div>
+    </form>
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-custom  fade in alert-dismissable show">
+            <div> {{ message }}</div>
+        </div>
+    {% endfor %}
 {% endblock %}
