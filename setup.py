@@ -14,14 +14,17 @@ try:
 except ImportError:
     pass
 
-requirements = [  # use last version of each package
+
+requirements = [
+    "Flask-SQLAlchemy>=2.5.1",
+    "SQLAlchemy>=0.8.0",
+    "asgiref>=3.2",
+    "charset-normalizer[unicode_backport]>=2.0.12",
     "flask>=2.1.0",
     "python-dotenv>=0.20.0",
-    "SQLAlchemy>=0.8.0",
-    "Flask-SQLAlchemy>=2.5.1",
-    "charset-normalizer[unicode_backport]>=2.0.12",
-    "python-dotenv>=0.20.0",
+    "requests>=2.22.0",
 ]
+
 docs_requirements = [
     "furo",
     "myst-parser",
@@ -31,10 +34,10 @@ docs_requirements = [
     "sphinx-tabs",
 ]
 dev_requirements = [
-    "pytest",
+    "coverage",
     "flake8",
     "pre-commit",
-    "coverage",
+    "pytest",
     "requests",
     *requirements,
     *docs_requirements,
