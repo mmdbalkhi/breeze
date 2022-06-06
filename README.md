@@ -24,7 +24,7 @@ the breeze is a fun web application for practising with [Flask](https://flask.pa
 
 ## Run the breeze
 
-- breeze need to [python](https://python.org) 3.7 or upper
+* breeze need to [python](https://python.org) 3.7 or upper
 
 first your need to install breeze requirements:
 
@@ -34,28 +34,28 @@ pip install -r requirements.txt
 
 then your add breeze to your environment and run breeze:
 
-- bash:
+* bash:
 
 ```bash
 export FLASK_APP=breeze
 flask run
 ```
 
-- fish
+* fish
 
 ```fish
 set -x FLASK_APP myapp
 flask run
 ```
 
-- cmd
+* cmd
 
 ```
 set FLASK_APP=breeze
 flask run
 ```
 
-- powershell
+* powershell
 
 ```
 $env:FLASK_APP = "breeze"
@@ -64,4 +64,8 @@ flask run
 
 now you can visit your breeze on your browser:
 
-- <http://localhost:5000>
+* <http://localhost:5000>
+
+## TODOs
+
+see [here](todo.md) for more details
