@@ -35,8 +35,10 @@ def register():
 
     :returns:
         :class:`flask.Response`:
-            - if the request method is GET, render the register template
-            - if the request method is POST, register the user and redirect to the login page
+            - method Get:
+                render the register template
+            - method Post:
+                register the user and redirect to the login page
 
     """
     if request.method == "POST":
