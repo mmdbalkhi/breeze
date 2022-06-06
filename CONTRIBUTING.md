@@ -17,7 +17,7 @@ Include the following information when reporting issues:
 
 ## Submitting pull requests
 
-your can work on any issue without assigning it to a member. if your like work on a feature, you can see [TODO.md](TODO.md) for find TODOs. but if you like to work on a bug, you can report bug in the [issue tracker](https://github.com/mmdbalkhi/breeze/issues) and work on it.
+your can work on any issue without assigning it to a member. if your like work on a feature, you can see [TODOs](index.md#TODOs) for find TODOs. but if you like to work on a bug, you can report bug in the [issue tracker](https://github.com/mmdbalkhi/breeze/issues) and work on it.
 
 Include the following in your patch:
 

@@ -14,6 +14,5 @@ hide-toc: true
 
 api
 contributing
-TODO
 license
 ```
