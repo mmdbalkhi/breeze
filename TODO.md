@@ -2,7 +2,7 @@
 
 this file is breeze todos file. we use this file to keep track of all the todos in breeze.
 
-> __**note:**__ this file writed by [github-copilot](https://copilot.github.com/) helps : D
+> __**note:**__  this file has written with [github-copilot](https://copilot.github.com/)'s help : D
 
 * [x] add user authentication
     - [ ] auth with other services like Google, GitHub, Twitter, etc.

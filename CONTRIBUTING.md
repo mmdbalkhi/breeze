@@ -44,16 +44,17 @@ git remote add fork https://github.com/{username}/breeze
 ```
 
 * 4: install and set-up virtualenv.
-     - *nix
+
+- *nix
 
 ```bash
      python3 -m venv env
      . env/bin/activate
 ```
 
-     - windows
+- windows
 
-```
+```bash
      > py -3 -m venv env
      > env\Scripts\activate
 ```
