@@ -1,18 +1,14 @@
-from breeze import create_app
 from breeze.models import Post
 from breeze.models import User
 from breeze.utils import get_current_time
 
-app = create_app()
-client = create_app().test_client()
 
-
-def test_create_comment_not_found():
+def test_create_comment_not_found(client):
     res = client.get("/p/404/new")
     assert res.status_code == 404
 
 
-def test_create_comment():
+def test_create_comment(app, client):
     with app.app_context():
         user = User(
             username="test_create_comment",
@@ -34,12 +30,16 @@ def test_create_comment():
     assert res.location == "/p/1"
 
 
-def test_get_create_comment_page():
+def test_get_create_comment_page(client):
+    client.post(
+        "/u/login",
+        data={"username": "test_create_comment", "password": "test_create_comment"},
+    )
     res = client.get("/p/1/new")
     assert res.status_code == 200
 
 
-def test_create_comment_not_login():
+def test_create_comment_not_login(client):
     client.get("/u/logout")
 
     res = client.get("/p/1/new")

@@ -1,9 +1,4 @@
-from breeze import create_app
-
-client = create_app().test_client()
-
-
-def test_index():
+def test_index(client):
     response = client.get("/")
     assert response.status_code == 200
     assert b"breeze" in response.data
