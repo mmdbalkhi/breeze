@@ -68,4 +68,4 @@ now you can visit your breeze on your browser:
 
 ## TODOs
 
-see [here](todo.md) for more details
+see [here](TODO.md) for more details
