@@ -46,8 +46,9 @@ jobs:
       - name: Run Flake8 💫
         run: flake8 breeze tests setup.py
 
-      - name: ⚡ create .env file
-        run: echo "SECRET_KEY=`date | sha256sum | base64 | head -c 60`" > .env
+      - name: set Environment Variables 💡
+        run: |
+          export RECAPTCHA_PUBLIC_KEY=${{ secrets.RECAPTCHA_PUBLIC_KEY }}
 
       - name: Run Tests and collect coverage 🧪
         run: |
