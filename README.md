@@ -85,13 +85,15 @@ we use tags to categorize todos. on the future, maybe we will use tools to help 
 
 > **__issues__** after review may be add to here.
 
+* [X] use [flask-wtf](https://flask-wtf.readthedocs.io/en/stable/) for form validation
 * [x] add user authentication
     - [ ] auth with other services like Google, GitHub, Twitter, etc.[auth]
     - [ ] user can change their data like password, email, etc.[setting]
     - [ ] user can delete their data[setting]
     - [X] add check for duplicate username, email, etc.[db]
     - [ ] add verification for emails with link, send code, etc.[auth]
-    - [ ] use Captcha for verification like reCaptcha, etc.[auth]
+    - [X] use Captcha for verification like reCaptcha, etc.[auth]
+        > flask-wtf by defult use recaptcha v2
 * [x] add user profile
     - [X] support [gravatar](https://en.gravatar.com/)[profile]
     - [ ] support cutsom avatar[profile][setting]
@@ -100,7 +102,7 @@ we use tags to categorize todos. on the future, maybe we will use tools to help 
         - [ ] bio: short description about yourself[profile]
         - [ ] info: many datas like location, birthday, etc.[profile]
 * [X] create a post or comment[post]
-    - [ ] delete post or comment[post]
+    - [X] delete post or comment[post]
     - [ ] like post or comment[post][db]
     - [ ] edit post or comment[post]
         - [ ] time limit for edit[post][utils]
@@ -143,6 +145,8 @@ we use tags to categorize todos. on the future, maybe we will use tools to help 
 * [ ] fix user profile[frontend]
     - [ ] use bootstrap and other css framework(if need) for improve user profile page[frontend]
 * [ ] fix auth page[frontend]
+* [ ] add buttom or otherthings
+    - [ ] for remove a post or comment[frontend]
 
 * **docs and api**:
 
