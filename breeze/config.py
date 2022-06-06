@@ -1,3 +1,5 @@
+from os import environ
+
 from breeze.utils import gen_random_string
 from dotenv import find_dotenv
 from dotenv import load_dotenv
@@ -7,6 +9,10 @@ class Config:
     """A base configuration class from which other configuration classes inherit.
     for use in :class:`flask.config.Config`
     """
+
+    # load env vars from .env file if it exists
+    if find_dotenv():  # pragma: no cover
+        load_dotenv()
 
     DEBUG = False
     TESTING = False
@@ -21,7 +27,5 @@ class Config:
     MAIL_PASSWORD = ""
     ADMINS = [""]
     LOG_TO_STDOUT = False
-
-    # load env vars from .env file if it exists
-    if find_dotenv():  # pragma: no cover
-        load_dotenv()
+    RECAPTCHA_PUBLIC_KEY = environ["RECAPTCHA_PUBLIC_KEY"]
+    RECAPTCHA_PRIVATE_KEY = environ["RECAPTCHA_PRIVATE_KEY"]

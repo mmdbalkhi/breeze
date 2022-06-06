@@ -1,4 +1,6 @@
 from breeze.auth import Auth
+from breeze.forms import LoginForm
+from breeze.forms import RegisterForm
 from breeze.models import Post
 from breeze.models import User
 from breeze.utils import get_image_from_gravatar
@@ -41,12 +43,21 @@ def register():
                 register the user and redirect to the login page
 
     """
+    form = RegisterForm(request.form)
+
     if request.method == "POST":
+        if not form.validate_on_submit():  # pragma: no cover
+            flash("please fill out all fields")
+            return render_template("auth/register.html", form=form), 400
+
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
 
-        if not username or not email or not password:
+        if password != confirm_password:
+            error = "passwords do not match"
+        elif not username or not email or not password:
             error = "please fill out all fields"
         elif User.query.filter_by(username=username).first():
             error = f"User {username} is already registered."
@@ -55,9 +66,7 @@ def register():
             if not email:
                 flash("email is invalid")
                 return (
-                    render_template(
-                        "auth/register.html",
-                    ),
+                    render_template("auth/register.html", form=form),
                     400,
                 )
 
@@ -65,19 +74,15 @@ def register():
             auth.register(user)
 
             flash("Registered successfully.")
-            return redirect(url_for("auth.login"))
+            return redirect(url_for("index"))
 
         flash(error)
         return (
-            render_template(
-                "auth/register.html",
-            ),
+            render_template("auth/register.html", form=form),
             400,
         )
 
-    return render_template(
-        "auth/register.html",
-    )
+    return render_template("auth/register.html", form=form)
 
 
 @bp.route("/login", methods=("GET", "POST"))
@@ -89,32 +94,33 @@ def login():
             - if the request method is GET, render the login template
             - if the request method is POST, login the user and redirect to the index page
     """
+    form = LoginForm(request.form)
+
     if request.method == "POST":
+        if not form.validate_on_submit():  # pragma: no cover
+            flash("please fill out all fields")
+            return render_template("auth/login.html", form=form), 400
+
         username = request.form.get("username")
         password = request.form.get("password")
-        error = None
+        remember_me = request.form.get("remember_me")
 
-        if not username or not password:
-            error, status_code = "Username and password are required.", 400
-        else:
-            user = User.query.filter_by(username=username).first()
-            if not user or not user.check_password(password):
-                error, status_code = "Incorrect username or password.", 401
+        user = User.query.filter_by(username=username).first()
+        if not user or not user.check_password(password):
+            flash("Incorrect username or password.")
+            return (
+                render_template("auth/login.html", form=form),
+                401,
+            )
 
-        if error is None:
-            auth.login(user)
-            return redirect(url_for("auth.profile"))
-
-        flash(error)
-        return (
-            render_template(
-                "auth/login.html",
-            ),
-            status_code,
-        )
+        if remember_me:
+            session.permanent = True
+        auth.login(user)
+        return redirect(url_for("auth.profile"))
 
     return render_template(
         "auth/login.html",
+        form=form,
     )
 
 
