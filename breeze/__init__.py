@@ -49,7 +49,7 @@ def create_app(test_config=None):
             db.create_all()
         except OperationalError:  # pragma: no cover
             pass
-
+    app.config["TESTING"] = True
     if test_config:
         app.config.update(test_config)
         app.config["WTF_CSRF_ENABLED"] = False

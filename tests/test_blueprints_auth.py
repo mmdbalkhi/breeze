@@ -38,6 +38,20 @@ def test_register_400_error(client):
     assert b"please fill out all fields" in response.data
 
 
+def test_register_not_match_passwords(client):
+    response = client.post(
+        "/u/register",
+        data=dict(
+            username="test_register_not_match_passwords",
+            email="test_register_not_match_passwords@test.com",
+            password="1234",
+            confirm_password="4321",
+        ),
+    )
+    assert response.status_code == 400
+    assert b"passwords do not match" in response.data
+
+
 def test_user_is_exist(app, client):
     with app.app_context():
         # Ensures that the database is emptied for next unit test

@@ -57,8 +57,6 @@ def register():
 
         if password != confirm_password:
             error = "passwords do not match"
-        elif not username or not email or not password:
-            error = "please fill out all fields"
         elif User.query.filter_by(username=username).first():
             error = f"User {username} is already registered."
         else:
@@ -112,8 +110,8 @@ def login():
                 render_template("auth/login.html", form=form),
                 401,
             )
-
-        if remember_me:
+        print(remember_me)
+        if remember_me:  # pragma: no cover
             session.permanent = True
         auth.login(user)
         return redirect(url_for("auth.profile"))
