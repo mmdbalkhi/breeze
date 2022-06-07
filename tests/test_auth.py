@@ -1,10 +1,10 @@
+from breeze import Auth
+from breeze import db
+from breeze import User
 from flask import g
 from flask import session
 
 from . import TestBreezeDB
-from breeze import Auth
-from breeze import db
-from breeze import User
 
 auth = Auth()
 

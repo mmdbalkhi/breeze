@@ -1,22 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<form method="post" id="post">
-
-    <div class="form-group">
-        <label for="content">Content</label>
-        <textarea form="post" class="form-control" id="content" placeholder="content" name="content"></textarea>
-    </div>
-
-    <button class="button login__submit">
-        <span class="button__text">Submit</span>
-        <i class="button__icon fas fa-chevron-right"></i>
-    </button>
-</form>
-{% for message in get_flashed_messages() %}
-<div class="alert alert-custom  fade in alert-dismissable show">
-    <div> {{ message }}</div>
-</div>
-{% endfor %}
-
+    <form method="post" id="comment">
+        {{ form.csrf_token }}
+        {{ form.content.lable }}{{ form.content(size=280) }}
+        {{ form.submit() }}
+    </form>
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-custom  fade in alert-dismissable show">
+            <div> {{ message }}</div>
+        </div>
+    {% endfor %}
 {% endblock %}

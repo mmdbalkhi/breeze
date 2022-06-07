@@ -1,28 +1,27 @@
-from breeze import create_app
 from breeze.models import db
 from breeze.models import User
 
-app = create_app()
-client = create_app().test_client()
 
-
-def test_register_get():
+def test_register_get(client):
     response = client.get("/u/register")
     assert response.status_code == 200
 
 
-def test_register_user():
+def test_register_user(client):
     response = client.post(
         "/u/register",
         data=dict(
-            username="testregister", email="testregister@test.com", password="1234"
+            username="testregister",
+            email="testregister@test.com",
+            password="1234",
+            confirm_password="1234",
         ),
     )
     assert response.status_code == 302  # redirect to login page after register
-    assert response.location == "/u/login"
+    assert response.location == "/"
 
 
-def test_register_400_error():
+def test_register_400_error(client):
     response = client.post(
         "/u/register", data=dict(username="testregister"), follow_redirects=True
     )
@@ -39,7 +38,21 @@ def test_register_400_error():
     assert b"please fill out all fields" in response.data
 
 
-def test_user_is_exist():
+def test_register_not_match_passwords(client):
+    response = client.post(
+        "/u/register",
+        data=dict(
+            username="test_register_not_match_passwords",
+            email="test_register_not_match_passwords@test.com",
+            password="1234",
+            confirm_password="4321",
+        ),
+    )
+    assert response.status_code == 400
+    assert b"passwords do not match" in response.data
+
+
+def test_user_is_exist(app, client):
     with app.app_context():
         # Ensures that the database is emptied for next unit test
         db.drop_all()
@@ -57,17 +70,21 @@ def test_user_is_exist():
             username="testUserIsExist",
             email="testUserIsExist@test.com",
             password="testUserIsExist",
+            confirm_password="testUserIsExist",
         ),
     )
     assert response.status_code == 400
     assert b"User testUserIsExist is already registered." in response.data
 
 
-def test_register_if_email_is_invalid():
+def test_register_if_email_is_invalid(client):
     response = client.post(
         "/u/register",
         data=dict(
-            username="testregister", email="testregister@test.c", password="1234"
+            username="testregister",
+            email="testregister@test.c",
+            password="1234",
+            confirm_password="1234",
         ),
         follow_redirects=True,
     )
@@ -75,25 +92,25 @@ def test_register_if_email_is_invalid():
     assert b"email is invalid" in response.data
 
 
-def test_get_login():
+def test_get_login(client):
     response = client.get("/u/login")
     assert response.status_code == 200
 
 
-def test_400_error_login():
+def test_400_error_login(client):
     response = client.post(
-        "/u/login", data=dict(username="testregister"), follow_redirects=True
+        "/u/login", data=dict(username="test_400_error_login"), follow_redirects=True
     )
     assert response.status_code == 400
     response = client.post(
-        "/u/login", data=dict(password="testregister"), follow_redirects=True
+        "/u/login", data=dict(password="test_400_error_login"), follow_redirects=True
     )
     assert response.status_code == 400
 
-    assert b"Username and password are required." in response.data
+    assert b"please fill out all fields" in response.data
 
 
-def test_login_user():
+def test_login_user(app, client):
     with app.app_context():
         # Ensures that the database is emptied for next unit test
         db.drop_all()
@@ -116,7 +133,7 @@ def test_login_user():
     assert response.location == "/u/profile"
 
 
-def test_incorrect_username_or_password():
+def test_incorrect_username_or_password(app, client):
     with app.app_context():
         # Ensures that the database is emptied for next unit test
         db.drop_all()
@@ -150,13 +167,13 @@ def test_incorrect_username_or_password():
     assert b"Incorrect username or password." in response.data
 
 
-def test_logout():
+def test_logout(client):
     response = client.get("/u/logout", follow_redirects=True)
     assert response.status_code == 200
     assert b"You have been logged out." in response.data
 
 
-def test_user_page():
+def test_user_page(app, client):
     with app.app_context():
         # Ensures that the database is emptied for next unit test
         db.drop_all()
@@ -171,12 +188,12 @@ def test_user_page():
     assert b"testUserPage" in response.data
 
 
-def test_user_page_error():
+def test_user_page_error(client):
     response = client.get("/u/404User", follow_redirects=True)
     assert response.status_code == 404
 
 
-def test_profile():
+def test_profile(app, client):
     with app.app_context():
         # Ensures that the database is emptied for next unit test
         db.drop_all()
@@ -207,7 +224,7 @@ def test_profile():
     assert b"testProfile" in response.data
 
 
-def test_profile_error():
+def test_profile_error(app, client):
     with app.app_context():
         # Ensures that the database is emptied for next unit test
         db.drop_all()

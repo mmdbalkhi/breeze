@@ -1,4 +1,5 @@
 from breeze.auth import Auth
+from breeze.forms import PostForm
 from breeze.models import Comment
 from breeze.models import Post
 from breeze.utils import get_current_time
@@ -24,12 +25,18 @@ def new():
         :class:`flask.Response`: The rendered template if the request is GET,
         :class:`flask.Response`: The redirect to the post if the request is POST
     """
+    form = PostForm()
 
     if not auth.is_authenticated:
         flash("You must be logged in to create a post")
         return redirect(url_for("auth.login"))
 
     if request.method == "POST":
+
+        if not form.validate_on_submit():  # pragma: no cover
+            flash("please fill out all fields", "error")
+            return render_template("posts/new.html", form=form), 400
+
         user_id = session["user_id"]
 
         content = request.form["content"]
@@ -42,9 +49,7 @@ def new():
         flash("Post created successfully.")
         return redirect(f"/p/{post.id}")
 
-    return render_template(
-        "posts/new.html",
-    )
+    return render_template("posts/new.html", form=form)
 
 
 @bp.route("/<int:id>")

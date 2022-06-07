@@ -46,10 +46,10 @@ jobs:
       - name: Run Flake8 💫
         run: flake8 breeze tests setup.py
 
-      - name: set Environment Variables 💡
+      - name: Set .env file 💾
         run: |
-          export RECAPTCHA_PUBLIC_KEY=${{ secrets.RECAPTCHA_PUBLIC_KEY }}
-
+          echo "RECAPTCHA_PUBLIC_KEY=${{ secrets.RECAPTCHA_PUBLIC_KEY }}" > .env
+          echo "RECAPTCHA_PRIVATE_KEY=${{ secrets.RECAPTCHA_PRIVATE_KEY }}" >> .env
       - name: Run Tests and collect coverage 🧪
         run: |
           coverage run -m pytest

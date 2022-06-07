@@ -13,6 +13,7 @@ hide-toc: true
 :hidden:
 
 api
+changelog
 contributing
 license
 ```
