@@ -14,7 +14,7 @@ from breeze.models import Post
 from breeze.models import Tag
 from breeze.models import User
 
-__version__ = "0.4.0-dev"
+__version__ = "0.5.0-dev"
 
 
 def create_app(test_config=None):

@@ -9,6 +9,12 @@ hide-toc: true
 ```
 
 ```{toctree}
+:hidden:
+config
+
+```
+
+```{toctree}
 :caption: Development
 :hidden:
 
