@@ -1,0 +1,23 @@
+name: Docker Image CI 🐳
+
+on:
+  push:
+    branches: ["main"]
+    paths: ["Dockerfile"]
+  pull_request:
+    paths: ["Dockerfile"]
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set .env file 💾
+        run: |
+          echo "RECAPTCHA_PUBLIC_KEY=${{ secrets.RECAPTCHA_PUBLIC_KEY }}" > .env
+          echo "RECAPTCHA_PRIVATE_KEY=${{ secrets.RECAPTCHA_PRIVATE_KEY }}" >> .env
+          echo "GITHUB_CLIENT_ID=${{ secrets.OAUTH_GITHUB_CLIENT_ID }}" >> .env
+          echo "GITHUB_CLIENT_SECRET=${{ secrets.OAUTH_GITHUB_CLIENT_SECRET }}" >> .env
+      - name: Build the Docker image 🐳
+        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
