@@ -11,7 +11,7 @@
     <a href='https://python-breeze.readthedocs.io/?badge=latest'>
         <img src='https://readthedocs.org/projects/python-breeze/badge/?version=latest' alt='Documentation Status' />
     </a>
-    <a href="https://github.com/mmdbalkhi/breeze/actions/workflows/tests.yaml">
+    <a href="https://github.com/mmdbalkhi/breeze/actions/workflows/tests.yml">
         <img src="https://github.com/mmdbalkhi/breeze/actions/workflows/tests.yaml/badge.svg"
         alt="test badge">
     </a>
