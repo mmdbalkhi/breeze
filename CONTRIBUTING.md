@@ -45,14 +45,14 @@ git remote add fork https://github.com/{username}/breeze
 
 * 4: install and set-up virtualenv.
 
-- *nix
+* *nix
 
 ```bash
      python3 -m venv env
      . env/bin/activate
 ```
 
-- windows
+* windows
 
 ```bash
      > py -3 -m venv env
@@ -86,6 +86,24 @@ git checkout -b your-branch-name origin/main
 ```
 
 * 6: Using your favorite editor, make your changes, committing as you go.
+     * 6.2: we use this structure for our commits:
+
+          * docs: `docs: <commit message> <filename>`
+          * fix bug: `bug: <commit message> <filename>`
+          * feature: `feature: <commit message> <filename>`
+          * refactor: `refactor: <commit message> <filename>`
+          * test: `test: <commit message> <filename>`
+          * chore: `chore: <commit message> <filename>`
+          * style: `style: <commit message> <filename>`
+          * revert: `revert: <commit message> <filename>`
+          * work in progress: `wip: <commit message> <filename>`
+     > we use this structure for easier read of the commit messages and git log.
+     * 6.3: if your change many files on a commit you should split this commit into smaller commits.
+     * 6.4: if your commit message is too long, you should use a short commit message on title and a longer commit message on body:
+
+```sh
+$ git commit -m "<tag>: <short commit message> <filename>" -m "<long commit message>"
+```
 
 * 6.2 Include tests that cover any code changes you make. Make sure the test fails without your patch. Run the tests as described below.
 
