@@ -5,11 +5,17 @@ on:
     paths-ignore:
       - "docs/**"
       - "*.md"
+      - "Dockerfile"
+      - "aure-pipelines.yml"
+      - "artwork"
   pull_request:
     branches: [main]
     paths-ignore:
       - "docs/**"
       - "*.md"
+      - "Dockerfile"
+      - "aure-pipelines.yml"
+      - "artwork"
 jobs:
   tests:
     name: ${{ matrix.name }} 🤖
