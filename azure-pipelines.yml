@@ -4,7 +4,16 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
 
 trigger:
-- main
+ branches:
+   include:
+   - main
+ paths:
+   include:
+   - breeze/*
+   - frontend/*
+   - tests/*
+   - setup*
+   - azure-pipelines.yml
 
 pool:
   vmImage: ubuntu-latest
