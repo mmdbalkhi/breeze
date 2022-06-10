@@ -29,11 +29,13 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
-          echo "RECAPTCHA_PUBLIC_KEY=${{ secrets.RECAPTCHA_PUBLIC_KEY }}" > .env
-          echo "RECAPTCHA_PRIVATE_KEY=${{ secrets.RECAPTCHA_PRIVATE_KEY }}" >> .env
+          echo 'RECAPTCHA_PUBLIC_KEY=$(RECAPTCHA_PUBLIC_KEY)' > .env
+          echo 'RECAPTCHA_PRIVATE_KEY=$(RECAPTCHA_PRIVATE_KEY)' >> .env
+          echo 'GITHUB_CLIENT_ID=$(GITHUB_CLIENT_ID)' >> .env
+          echo 'GITHUB_CLIENT_SECRET=$(GITHUB_CLIENT_SECRET)' >> .env
   displayName: 'Set up environment'
 
 - script: |
     pip install pytest pytest-azurepipelines
     pytest
-  displayName: 'pytest'
+  displayName: 'Run tests'
