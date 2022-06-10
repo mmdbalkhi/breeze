@@ -17,5 +17,7 @@ rules:
   - requiredLabels:
       - auto-merge
 
-mergeCommitMessage: "{title} (#{number})"
+mergeCommitMessage: |
+  {title} (#{number})
+  {body}
 mergeMethod: squash
