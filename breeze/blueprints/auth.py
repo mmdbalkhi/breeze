@@ -1,3 +1,4 @@
+from breeze import GithubOAuth2
 from breeze.auth import Auth
 from breeze.forms import LoginForm
 from breeze.forms import RegisterForm
@@ -7,28 +8,33 @@ from breeze.utils import get_image_from_gravatar
 from breeze.utils import normalise_email
 from flask import abort
 from flask import Blueprint
+from flask import current_app
 from flask import flash
 from flask import g
+from flask import make_response
 from flask import redirect
 from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
 
-bp = Blueprint("auth", __name__, url_prefix="/u")
 auth = Auth()
+bp = Blueprint("auth", __name__, url_prefix="/u")
+gh = GithubOAuth2()
 
 
 @bp.before_app_request
 def load_logged_in_user():
-    """If a user id is stored in the session, load the user object from
-    the database into ``g.user``."""
-    user_id = session.get("user_id")
-    user = User()
+    """If a `user_id` set in the cookie, load the user object into `g.user`"""
+    user_id = request.cookies.get("user_id")
     if user_id is None:
-        g.user = None
+        if session.get("user_id") is None:
+            g.user = None
+        else:
+            g.user = User.query.get(session["user_id"])
     else:
-        g.user = user.get_user_by_id(id=user_id)
+        session["user_id"] = user_id
+        g.user = User.query.get(user_id)
 
 
 @bp.route("/register", methods=("GET", "POST"))
@@ -54,6 +60,7 @@ def register():
         email = request.form.get("email")
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
+        profile_image = get_image_from_gravatar(email)
 
         if password != confirm_password:
             error = "passwords do not match"
@@ -67,12 +74,29 @@ def register():
                     render_template("auth/register.html", form=form),
                     400,
                 )
+            if User.get_user_by_email(email):
+                flash("email is already registered")
+                return (
+                    render_template("auth/register.html", form=form),
+                    400,
+                )
 
-            user = User(username=username, email=email, password=password)
+            user = User(
+                username=username,
+                email=email,
+                password=password,
+                profile_image=profile_image,
+            )
             auth.register(user)
 
-            flash("Registered successfully.")
-            return redirect(url_for("index"))
+            resp = make_response(redirect(url_for("index")))
+            resp.set_cookie(
+                "user_id",
+                str(user.id),
+                max_age=60 * 60 * 24 * 7,
+                secure=False if current_app.config.get("TESTING") else True,
+            )
+            return resp
 
         flash(error)
         return (
@@ -110,12 +134,16 @@ def login():
                 render_template("auth/login.html", form=form),
                 401,
             )
-        print(remember_me)
+
+        max_age = 7 * 24 * 60 * 60  # 7 days
         if remember_me:  # pragma: no cover
             session.permanent = True
-        auth.login(user)
-        return redirect(url_for("auth.profile"))
+            max_age = 365 * 24 * 60 * 60  # one year
 
+        auth.login(user)
+        resp = make_response(redirect(url_for("index")))
+        resp.set_cookie("user_id", str(user.id), max_age=max_age, secure=True)
+        return resp
     return render_template(
         "auth/login.html",
         form=form,
@@ -129,9 +157,11 @@ def logout():
     :returns:
         :class:`flask.Response`: redirect to the login page
     """
+    resp = make_response(redirect(url_for("auth.login")))
+    resp.delete_cookie("user_id")
     flash("You have been logged out.")
     auth.logout()
-    return redirect(url_for("auth.login"))
+    return resp
 
 
 @bp.route("/<username>")
@@ -147,7 +177,7 @@ def user(username: str):
     user = User.get_user_by_username(username)
     if not user:
         abort(404)
-    img = get_image_from_gravatar(user.email)
+    img = user.profile_image
     posts = Post.get_posts_by_user_id(user.id)
     return render_template(
         "auth/user.html",
@@ -171,3 +201,9 @@ def profile():
 
     flash("you must be logged in to see your profile")
     return redirect(url_for("auth.login"))
+
+
+@bp.route("/github")
+def github():
+    """redirect to auth url"""
+    return redirect(gh.create_authorization_data()[0])

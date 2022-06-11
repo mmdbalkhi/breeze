@@ -13,8 +13,8 @@ from flask import request
 from flask import session
 from flask import url_for
 
-bp = Blueprint("posts", __name__, url_prefix="/p")
 auth = Auth()
+bp = Blueprint("posts", __name__, url_prefix="/p")
 
 
 @bp.route("/new", methods=("GET", "POST"))
@@ -85,6 +85,7 @@ def delete(id: int):
     :returns:
         :class:`flask.Response`: The redirect to the home page
     """
+    user_id = request.cookies.get("user_id")
 
     post = Post.get_post_by_id(id)
     if not post:
@@ -94,10 +95,10 @@ def delete(id: int):
         flash("You must be logged in to delete a post")
         return redirect(url_for("auth.login"))
 
-    if post.user_id != session["user_id"]:
+    if post.user_id != int(user_id):
         flash("You are not authorized to delete this post")
         return redirect(url_for("posts.show", id=id))
 
     post.delete()
     flash("Post deleted successfully.")
-    return redirect(url_for("index.index"))
+    return redirect(url_for("index"))

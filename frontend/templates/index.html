@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-
 {% if posts %}
 {% for post in posts %}
 <div class="post" name="post">
     <div name="user" class="user">
         <a href="/u/{{ post.user.username }}">{{ post.user.username }}</a>
-        <img src="{{ gravatar(post.user.email) }}" alt="{{ post.user.username }} profile" width="32" height="32">
+        <img src="{{ post.user.profile_image }}" alt="{{ post.user.username }} profile" width="32" height="32">
     </div>
     <div name="content" class="content">
         {% if post.content|length>10 %}

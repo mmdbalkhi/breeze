@@ -1,5 +1,5 @@
 from breeze import exc
-from breeze import utils
+from breeze.utils import get_image_from_gravatar
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
@@ -22,6 +22,13 @@ class User(db.Model):
         :meth:`delete`: delete user from db
         :meth:`update`: update user from db
 
+    :attributes:
+        :attr:`username` (`str`): user username
+        :attr:`email` (`str`): user email
+        :attr:`password` (`str`): user password
+        :attr:`profile_image` (`str`): user profile image
+            this is a url to the image and by default it is a gravatar image
+
     """
 
     __tablename__ = "users"
@@ -30,6 +37,7 @@ class User(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=True)  # len(sha512) == 128
+    profile_image = db.Column(db.String(128), nullable=True)
 
     def __repr__(self):
         """User representation
@@ -46,12 +54,14 @@ class User(db.Model):
         :raises:
             :class:`breeze.exc.EmptyError`
         """
-        self.email = utils.normalise_email(self.email)
-
         if not self.password:
             raise exc.EmptyError("password is Empty")
 
         self.password = generate_password_hash(self.password)
+
+        if self.profile_image is None:
+            self.profile_image = get_image_from_gravatar(self.email)
+
         db.session.add(self)
         db.session.commit()
 

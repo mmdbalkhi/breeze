@@ -8,12 +8,22 @@ API
 
 .. autofunction:: breeze.create_app
 
-Auth
+Authentication
 ------------------
 
-.. automodule:: breeze.auth
+Auth is a module that provides a simple authentication system for Flask.
+
+auth base class
+~~~~~~~~~~~~~~~~
+
+.. autoclass:: breeze.Auth
    :members:
 
+Auth with other ways(e.g. github, etc)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: breeze.GithubOAuth2
+   :members:
 
 Blueprints
 ------------------

@@ -13,9 +13,15 @@
         </div>
         <div>
         {{ form.recaptcha }}
-        <input type=submit class="btn btn-outline-success" value="Register now">
+        <input type=submit class="btn btn-outline-success fade in show" value="Register now">
         </div>
     </form>
+    <div>
+        <div class="col-xs-12 center-xs">
+            <a href="{{ url_for('auth.github') }}" class="btn btn-default btn-raised btn-lg p-left-xs-40 p-right-xs-40"><i
+                    class="fa fa-github m-right-xs-5"></i>Register with GitHub</a>
+        </div>
+    </div>
     {% for message in get_flashed_messages() %}
         <div class="alert alert-custom  fade in alert-dismissable show">
             <div> {{ message }}</div>

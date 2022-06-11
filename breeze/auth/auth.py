@@ -1,5 +1,6 @@
 from breeze.models import User
 from flask import g
+from flask import request
 from flask import session
 
 
@@ -26,6 +27,9 @@ class Auth:
         :return:
             :class:`flask.g`: flask global object
         """
+        user_id = request.cookies.get("user_id")
+        if user_id:
+            g.user = User.get_user_by_id(user_id)
         if not hasattr(g, "user"):
             g.user = None
             if "user_id" in session:
