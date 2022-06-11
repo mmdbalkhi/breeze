@@ -61,7 +61,7 @@ class Config:
     RECAPTCHA_PUBLIC_KEY = environ.get("RECAPTCHA_PUBLIC_KEY", "")
     RECAPTCHA_PRIVATE_KEY = environ.get("RECAPTCHA_PRIVATE_KEY", "")
 
-    if not (RECAPTCHA_PUBLIC_KEY and RECAPTCHA_PRIVATE_KEY):
+    if not (RECAPTCHA_PUBLIC_KEY and RECAPTCHA_PRIVATE_KEY):  # pragma: no cover
         logging.error(
             "RECAPTCHA_PUBLIC_KEY and/or RECAPTCHA_PRIVATE_KEY not found in your .env file. "
             "please add them to your .env file and try again."

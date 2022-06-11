@@ -26,15 +26,7 @@ gh = GithubOAuth2()
 @bp.before_app_request
 def load_logged_in_user():
     """If a `user_id` set in the cookie, load the user object into `g.user`"""
-    user_id = request.cookies.get("user_id")
-    if user_id is None:
-        if session.get("user_id") is None:
-            g.user = None
-        else:
-            g.user = User.query.get(session["user_id"])
-    else:
-        session["user_id"] = user_id
-        g.user = User.query.get(user_id)
+    g.user = auth.current_user
 
 
 @bp.route("/register", methods=("GET", "POST"))
@@ -64,18 +56,18 @@ def register():
 
         if password != confirm_password:
             error = "passwords do not match"
-        elif User.query.filter_by(username=username).first():
+        elif User.get_user_by_username(username):
             error = f"User {username} is already registered."
+        elif User.get_user_by_email(email):
+            flash(f"Email {email} is already registered")
+            return (
+                render_template("auth/register.html", form=form),
+                400,
+            )
         else:
             email = normalise_email(email)
             if not email:
                 flash("email is invalid")
-                return (
-                    render_template("auth/register.html", form=form),
-                    400,
-                )
-            if User.get_user_by_email(email):
-                flash("email is already registered")
                 return (
                     render_template("auth/register.html", form=form),
                     400,

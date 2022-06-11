@@ -15,15 +15,24 @@ gh = GithubOAuth2()
 
 
 @bp.route("/github")
-def github():
-    """Github OAuth2 callback"""
+def github():  # pragma: no cover
+    """Github OAuth2 callback
+
+    this function is called by Github OAuth2 after user has authorized the app.
+
+    :returns:
+        :class:`flask.Response`:
+
+    .. note::
+        this function for now can't be tested because it's need to Auth user to get token
+    """
 
     code = request.args.get("code")
     state = request.args.get("state")
 
     if not (code and state):
         abort(400)
-    print(f"{request.url_root}c/github/{request.query_string.decode('utf-8')}")
+
     access_token = gh.fetch_token(
         f"{request.url_root}c/github?{request.query_string.decode('utf-8')}"
     )
@@ -46,4 +55,4 @@ def github():
     else:
         auth.login(user)
 
-    return redirect(url_for("index.index"))
+    return redirect(url_for("index"))

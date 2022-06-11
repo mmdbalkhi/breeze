@@ -79,6 +79,32 @@ def test_user_is_exist(app, client):
     assert b"User testUserIsExist is already registered." in response.data
 
 
+def test_if_email_is_exists(app, client):
+    with app.app_context():
+        # Ensures that the database is emptied for next unit test
+        db.drop_all()
+        db.create_all()
+
+        user = User(
+            username="testIfEmailIsExists",
+            email="testIfEmailIsExists@test.com",
+            password="testIfEmailIsExists",
+        )
+        user.save()
+
+    response = client.post(
+        "/u/register",
+        data=dict(
+            username="testIfEmailIsExists2",
+            email="testIfEmailIsExists@test.com",
+            password="testIfEmailIsExists",
+            confirm_password="testIfEmailIsExists",
+        ),
+    )
+    assert response.status_code == 400
+    assert b"Email testIfEmailIsExists@test.com is already registered" in response.data
+
+
 def test_register_if_email_is_invalid(client):
     response = client.post(
         "/u/register",

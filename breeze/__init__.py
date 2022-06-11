@@ -45,7 +45,7 @@ def create_app(test_config=None):
     csrf.init_app(app)
 
     # check app is running in production mode
-    if test_config:
+    if test_config:  # pragma: no cover
         # set test config
         app.config.update(test_config)
         app.config["WTF_CSRF_ENABLED"] = False

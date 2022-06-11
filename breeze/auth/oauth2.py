@@ -22,7 +22,7 @@ class GithubOAuth2:
         """
         return self.github.create_authorization_url(self.authorization_endpoint)
 
-    def fetch_token(self, authorization_response: str) -> dict:
+    def fetch_token(self, authorization_response: str) -> dict:  # pragma: no cover
         """Fetch token
 
         :param code: `str`: code
@@ -32,7 +32,7 @@ class GithubOAuth2:
             self.token_endpoint, authorization_response=authorization_response
         )
 
-    def get_user_info(self, token: dict) -> dict:
+    def get_user_info(self, token: dict) -> dict:  # pragma: no cover
         """Get user info
 
         :param token: `dict`: token
@@ -43,7 +43,7 @@ class GithubOAuth2:
         )
         return client.get("https://api.github.com/user").json()
 
-    def get_user_by_code(self, code: str) -> dict:
+    def get_user_by_code(self, code: str) -> dict:  # pragma: no cover
         """Get user by code
 
         :param code: `str`: code
