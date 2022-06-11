@@ -11,6 +11,7 @@ hide-toc: true
 ```{toctree}
 :hidden:
 config
+auth
 
 ```
 

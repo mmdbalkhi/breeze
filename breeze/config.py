@@ -1,4 +1,5 @@
 import logging
+import sys
 from os import environ
 
 from breeze.utils import gen_random_string
@@ -61,21 +62,21 @@ class Config:
     RECAPTCHA_PRIVATE_KEY = environ.get("RECAPTCHA_PRIVATE_KEY", "")
 
     if not (RECAPTCHA_PUBLIC_KEY and RECAPTCHA_PRIVATE_KEY):  # pragma: no cover
-        logging.warning(
-            "RECAPTCHA_PUBLIC_KEY and/or RECAPTCHA_PRIVATE_KEY not found in your .env file. please add them to your"
-            " .env file and try again. otherwiseyour can ignore this warning. (if you don't want to use RECAPTCHA or you are run"
-            "tests, don't worry about tests, testing will continue without ReCapthca keys."
+        logging.error(
+            "RECAPTCHA_PUBLIC_KEY and/or RECAPTCHA_PRIVATE_KEY not found in your .env file. "
+            "please add them to your .env file and try again."
         )
+        sys.exit(1)
 
     # oauth2 with github
     GITHUB_CLIENT_ID = environ.get("GITHUB_CLIENT_ID", "")
     GITHUB_CLIENT_SECRET = environ.get("GITHUB_CLIENT_SECRET", "")
 
-    GITHUB_SCOOP = "user:user"  # read only access, can read all user data from github
+    GITHUB_SCOOP = "user:email"  # we only need the user's email
 
     if not (GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET):  # pragma: no cover
         logging.warning(
             "if you want to use github oauth2, please set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET in your .env file"
-            " and try again. Otherwise, you can ignore this warning. ( if you don't want to use github oauth2 or you are run"
-            "tests, don't worry about tests, testing will continue without github oauth2."
+            " and try again. Otherwise, you can ignore this warning. ( if you don't want to use github oauth2 or this) "
+            "testing will continue without github oauth2."
         )

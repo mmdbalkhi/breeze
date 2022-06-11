@@ -128,5 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# vscode
+.vscode/
+
 # SQLite
 breeze.db

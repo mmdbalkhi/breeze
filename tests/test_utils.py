@@ -1,5 +1,4 @@
 import pytest
-import requests
 from breeze import utils
 
 
@@ -35,16 +34,10 @@ def test_check_hash():
 
 def test_get_image_from_gravatar():
     assert isinstance(utils.get_image_from_gravatar("user@test.com"), str)
-
-    try:
-        assert (
-            requests.get(
-                utils.get_image_from_gravatar("user@test.com"), timeout=1
-            ).status_code
-            == 200
-        )
-    except requests.exceptions.ConnectionError:  # pragma: no cover
-        pytest.skip("internet connection is not available")
+    assert (
+        utils.get_image_from_gravatar("user@test.com")
+        == "https://www.gravatar.com/avatar/1460318498c1f53bb880ce2e6d9ef64b"
+    )
 
 
 def test_gen_random_string():

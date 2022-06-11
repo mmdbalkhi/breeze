@@ -114,18 +114,19 @@ def test_delete_post(app, client):
 
         # create a user
         user = User(
-            username="test_new_post",
-            email="test@test.com",
-            password="test_new_post",
+            username="test_delete_post",
+            email="test_delete_post@test.com",
+            password="test_delete_post",
         )
         user.save()
         client.post(
-            "/u/login", data={"username": "test_new_post", "password": "test_new_post"}
+            "/u/login",
+            data={"username": "test_delete_post", "password": "test_delete_post"},
         )
 
         # create a post
         client.post(
-            "/p/new", data={"content": "test create a new post"}, follow_redirects=True
+            "/p/new", data={"content": "test delete a post"}, follow_redirects=True
         )
 
     response = client.get("/p/1/delete")

@@ -16,6 +16,7 @@ except ImportError:
 
 
 requirements = [
+    "Authlib>=0.9.0",
     "Flask-SQLAlchemy>=2.5.1",
     "Flask-WTF>=1.0.0",
     "SQLAlchemy>=0.8.0",

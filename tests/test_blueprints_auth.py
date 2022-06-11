@@ -1,3 +1,4 @@
+import pytest
 from breeze.models import db
 from breeze.models import User
 
@@ -17,22 +18,23 @@ def test_register_user(client):
             confirm_password="1234",
         ),
     )
-    assert response.status_code == 302  # redirect to login page after register
+    assert response.status_code == 302
     assert response.location == "/"
 
 
-def test_register_400_error(client):
-    response = client.post(
-        "/u/register", data=dict(username="testregister"), follow_redirects=True
-    )
-    assert response.status_code == 400
-    response = client.post(
-        "/u/register", data=dict(email="testregister@test.com"), follow_redirects=True
-    )
-    assert response.status_code == 400
-    response = client.post(
-        "/u/register", data=dict(password="testregister"), follow_redirects=True
-    )
+@pytest.mark.parametrize(
+    "case",
+    [
+        {"username": "400error"},
+        {"password": "400error"},
+        {"email": "400error@test.com"},
+        {"username": "", "password": "1234"},
+        {"username": "testLoginUser", "password": ""},
+        {"username": "", "email": "400error@test.com"},
+    ],
+)
+def test_register_400_error(case, client):
+    response = client.post("/u/register", data=dict(case), follow_redirects=True)
     assert response.status_code == 400
 
     assert b"please fill out all fields" in response.data
@@ -77,6 +79,32 @@ def test_user_is_exist(app, client):
     assert b"User testUserIsExist is already registered." in response.data
 
 
+def test_if_email_is_exists(app, client):
+    with app.app_context():
+        # Ensures that the database is emptied for next unit test
+        db.drop_all()
+        db.create_all()
+
+        user = User(
+            username="testIfEmailIsExists",
+            email="testIfEmailIsExists@test.com",
+            password="testIfEmailIsExists",
+        )
+        user.save()
+
+    response = client.post(
+        "/u/register",
+        data=dict(
+            username="testIfEmailIsExists2",
+            email="testIfEmailIsExists@test.com",
+            password="testIfEmailIsExists",
+            confirm_password="testIfEmailIsExists",
+        ),
+    )
+    assert response.status_code == 400
+    assert b"Email testIfEmailIsExists@test.com is already registered" in response.data
+
+
 def test_register_if_email_is_invalid(client):
     response = client.post(
         "/u/register",
@@ -97,14 +125,17 @@ def test_get_login(client):
     assert response.status_code == 200
 
 
-def test_400_error_login(client):
-    response = client.post(
-        "/u/login", data=dict(username="test_400_error_login"), follow_redirects=True
-    )
-    assert response.status_code == 400
-    response = client.post(
-        "/u/login", data=dict(password="test_400_error_login"), follow_redirects=True
-    )
+@pytest.mark.parametrize(
+    "case",
+    [
+        {"username": "testProfile"},
+        {"password": "1234"},
+        {"username": ""},
+        {"password": ""},
+    ],
+)
+def test_400_error_login(case, client):
+    response = client.post("/u/login", data=dict(case), follow_redirects=True)
     assert response.status_code == 400
 
     assert b"please fill out all fields" in response.data
@@ -129,8 +160,8 @@ def test_login_user(app, client):
             password="1234",
         ),
     )
-    assert response.status_code == 302  # redirect to profile page after login
-    assert response.location == "/u/profile"
+    assert response.status_code == 302  # redirect to index page after login
+    assert response.location == "/"
 
 
 def test_incorrect_username_or_password(app, client):
@@ -242,3 +273,9 @@ def test_profile_error(app, client):
     response = client.get("/u/profile", follow_redirects=True)
     assert response.status_code == 200
     assert b"you must be logged in to see your profile" in response.data
+
+
+def test_redirect_github_oauth2(client):
+    response = client.get("/u/github")
+    assert response.status_code == 302
+    assert str(response.location).startswith("https://github.com/login/oauth/authorize")

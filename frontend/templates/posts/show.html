@@ -4,7 +4,7 @@
     {% if post %}
     <div name="user" class="user">
         <a href="/u/{{ post.user.username }}">{{ post.user.username }}</a>
-        <img src="{{ gravatar(post.user.email) }}" alt="{{ post.user.username }} profile" width="32" height="32">
+        <img src="{{ post.user.profile_image }}" alt="{{ post.user.username }} profile" width="32" height="32">
     </div>
     <div name="content" class="content">
         {{ post.content }}
@@ -19,7 +19,7 @@
             <a href="/u/{{ comment.user.username }}">
                 {{ comment.user.username }}
             </a>
-            <img src="{{ gravatar(comment.user.email) }}" alt="{{ comment.user.username }} profile" width="32" height="32">
+            <img src="{{ post.user.profile_image }}" alt="{{ comment.user.username }} profile" width="32" height="32">
         </div>
         <div name="content" class="content">
             {{ comment.content }}

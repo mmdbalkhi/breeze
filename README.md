@@ -87,7 +87,11 @@ we use tags to categorize todos. on the future, maybe we will use tools to help 
 
 * [X] use [flask-wtf](https://flask-wtf.readthedocs.io/en/stable/) for form validation
 * [x] add user authentication
-    - [ ] auth with other services like Google, GitHub, Twitter, etc.[auth]
+    - [X] auth with other services like Google, GitHub, Twitter, etc.[auth]
+        - [X] github(OAuth2)[auth]
+        - [ ] Google(OAuth2)[auth]
+        - [ ] Twitter(OAuth1)[auth]
+    - [ ] add page for check user OAuth is valid or not[auth][frontend]
     - [ ] user can change their data like password, email, etc.[setting]
     - [ ] user can delete their data[setting]
     - [X] add check for duplicate username, email, etc.[db]
