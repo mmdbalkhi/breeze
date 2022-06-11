@@ -5,7 +5,7 @@ from breeze import Config
 from breeze import GithubOAuth2 as Github
 
 if not (Config.GITHUB_CLIENT_ID or Config.GITHUB_CLIENT_SECRET):  # pragma: no cover
-    pytest.skip("GithubOAuth2 Configs are not set")
+    pytest.skip("GithubOAuth2 Configs are not set", allow_module_level=True)
 
 
 class GithubOAuth2Test(unittest.TestCase):
