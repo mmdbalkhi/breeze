@@ -279,3 +279,9 @@ def test_redirect_github_oauth2(client):
     response = client.get("/u/github")
     assert response.status_code == 302
     assert str(response.location).startswith("https://github.com/login/oauth/authorize")
+
+
+def test_redirect_discord_oauth2(client):
+    response = client.get("/u/discord")
+    assert response.status_code == 302
+    assert str(response.location).startswith("https://discord.com/api/oauth2/authorize")
