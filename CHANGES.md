@@ -2,6 +2,7 @@
 
 ## 5.x
 
+* support discord oauth2
 * use coockie to store user info
 * add http error pages(404, 405)
 * support github oauth2

@@ -1,5 +1,6 @@
+from breeze import Auth
+from breeze import DiscordOAuth2
 from breeze import GithubOAuth2
-from breeze.auth import Auth
 from breeze.forms import LoginForm
 from breeze.forms import RegisterForm
 from breeze.models import Post
@@ -21,6 +22,7 @@ from flask import url_for
 auth = Auth()
 bp = Blueprint("auth", __name__, url_prefix="/u")
 gh = GithubOAuth2()
+dis = DiscordOAuth2()
 
 
 @bp.before_app_request
@@ -199,3 +201,9 @@ def profile():
 def github():
     """redirect to auth url"""
     return redirect(gh.create_authorization_data()[0])
+
+
+@bp.route("/discord")
+def discord():
+    """redirect to auth url"""
+    return redirect(dis.create_authorization_data()[0])

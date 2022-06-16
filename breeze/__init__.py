@@ -3,6 +3,7 @@
 from breeze import exc
 from breeze import utils
 from breeze.auth import Auth
+from breeze.auth import DiscordOAuth2
 from breeze.auth import GithubOAuth2
 from breeze.blueprints import auth as auth_bp
 from breeze.blueprints import callback as callback_bp
