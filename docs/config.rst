@@ -19,3 +19,5 @@ for example `.env` file contains the following::
     RECAPTCHA_PRIVATE_KEY=<your_recaptcha_private_key>
     GITHUB_CLIENT_ID=<your_github_client_id>
     GITHUB_CLIENT_SECRET=<your_github_client_secret>
+    DISCORD_CLIENT_ID=<your_discord_client_id>
+    DISCORD_CLIENT_SECRET=<your_discord_client_secret>
