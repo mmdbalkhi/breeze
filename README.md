@@ -1,3 +1,5 @@
+# Development has stopped for now and may be done again in the future.
+
 <p algin="center">
     <img src="https://raw.githubusercontent.com/mmdbalkhi/breeze/main/artwork/breeze.png">
 </p>
